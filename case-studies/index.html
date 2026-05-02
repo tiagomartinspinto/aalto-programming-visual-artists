@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Studies Gallery - Programming for Visual Artists</title>
+    <meta name="description" content="Browse local mirrors of student Study 1 and Study 2 sketches from Programming for Visual Artists at Aalto University.">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <style>
+      :root { color-scheme: dark; --bg: #090b0f; --panel: #10141b; --panel-2: #151b23; --ink: #f5f0e8; --muted: #aab1bd; --line: #28313f; --accent: #54d6c7; --accent-2: #ff5b4f; --accent-3: #f3c969; }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; background: radial-gradient(circle at 14% 8%, rgba(84, 214, 199, 0.18), transparent 32%), radial-gradient(circle at 86% 12%, rgba(255, 91, 79, 0.15), transparent 30%), var(--bg); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      a { color: inherit; }
+      .topbar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 14px clamp(18px, 4vw, 56px); border-bottom: 1px solid var(--line); background: rgba(9, 11, 15, 0.9); backdrop-filter: blur(14px); }
+      .brand { font-weight: 780; }
+      nav { display: flex; flex-wrap: wrap; gap: 14px; color: var(--muted); font-size: 14px; }
+      nav a { text-decoration: none; }
+      nav a:hover { color: var(--ink); }
+      main { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 48px 0 72px; }
+      .hero { display: grid; gap: 18px; margin-bottom: 30px; }
+      .eyebrow { margin: 0; color: var(--accent); font-size: 13px; font-weight: 820; text-transform: uppercase; }
+      h1 { max-width: 880px; margin: 0; font-size: clamp(42px, 8vw, 84px); line-height: 0.95; letter-spacing: 0; }
+      .lede { max-width: 780px; margin: 0; color: #d5d8de; font-size: clamp(18px, 2vw, 24px); line-height: 1.45; }
+      .stats { display: flex; flex-wrap: wrap; gap: 10px; color: var(--muted); }
+      .stat { padding: 8px 10px; border: 1px solid var(--line); border-radius: 999px; background: rgba(16, 20, 27, 0.7); }
+      .viewer { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr); gap: 18px; align-items: stretch; margin: 34px 0; }
+      .stage { min-height: min(68vw, 650px); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #07090d; }
+      .stage iframe { width: 100%; height: 100%; min-height: 520px; border: 0; display: block; background: #090b0f; }
+      .viewer-info, .gallery-card { border: 1px solid var(--line); border-radius: 8px; background: rgba(16, 20, 27, 0.86); }
+      .viewer-info { display: grid; align-content: start; gap: 14px; padding: 18px; }
+      .viewer-info h2 { margin: 0; font-size: clamp(26px, 4vw, 42px); line-height: 1; }
+      .viewer-info p { margin: 0; color: var(--muted); line-height: 1.5; }
+      .tag-row, .actions, .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+      .tag { padding: 5px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 12px; }
+      button, .button { min-height: 40px; padding: 9px 12px; border: 1px solid rgba(84, 214, 199, 0.55); border-radius: 6px; background: rgba(84, 214, 199, 0.14); color: var(--ink); font: inherit; font-size: 14px; font-weight: 760; text-decoration: none; cursor: pointer; }
+      button[aria-pressed="true"] { background: var(--accent); color: #07100f; }
+      .button.secondary, button.secondary { border-color: var(--line); background: var(--panel-2); color: var(--muted); }
+      .gallery-header { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin: 36px 0 16px; }
+      .gallery-header h2 { margin: 0; font-size: clamp(28px, 4vw, 48px); }
+      .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 14px; }
+      .gallery-card { display: grid; gap: 12px; padding: 14px; text-align: left; }
+      .gallery-card h3 { margin: 0; font-size: 22px; line-height: 1.05; }
+      .gallery-card p { margin: 0; color: var(--muted); line-height: 1.45; }
+      .swatch { height: 110px; border: 1px solid rgba(245, 240, 232, 0.12); border-radius: 6px; background: radial-gradient(circle at var(--x, 30%) var(--y, 30%), rgba(84, 214, 199, 0.55), transparent 24%), radial-gradient(circle at calc(100% - var(--x, 30%)) 72%, rgba(255, 91, 79, 0.45), transparent 28%), repeating-linear-gradient(90deg, rgba(245, 240, 232, 0.08) 0 1px, transparent 1px 24px), #0d1117; }
+      .is-hidden { display: none; }
+      .footer { margin-top: 48px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+      :focus-visible { outline: 3px solid var(--accent-3); outline-offset: 3px; }
+      @media (max-width: 840px) { .topbar, .viewer, .gallery-header { grid-template-columns: 1fr; flex-direction: column; align-items: flex-start; } .stage iframe { min-height: 420px; } }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Student Studies</div>
+      <nav aria-label="Gallery navigation">
+        <a href="../index.html">Course home</a>
+        <a href="https://openprocessing.org/curation/90882">Original curation</a>
+      </nav>
+    </header>
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Programming for Visual Artists</p>
+        <h1 id="page-title">Student Studies Gallery</h1>
+        <p class="lede">Browse Study 1 and Study 2 work from the course without leaving this site. Each study is mirrored locally so you can run it here, then open the source when you want to learn from how it was made.</p>
+        <div class="stats" aria-label="Gallery totals">
+          <span class="stat">22 local studies</span>
+          <span class="stat">11 Study 1 works</span>
+          <span class="stat">11 Study 2 works</span>
+        </div>
+      </section>
+      <section class="viewer" aria-label="Selected study viewer">
+        <div class="stage"><iframe id="study-frame" title="Selected student study"></iframe></div>
+        <div class="viewer-info">
+          <div class="tag-row" id="viewer-tags"></div>
+          <h2 id="viewer-title">Choose a study</h2>
+          <p id="viewer-description">Select a card below to run the study in this viewer.</p>
+          <div class="actions">
+            <a class="button" id="open-study" href="#">Open full page</a>
+            <a class="button secondary" id="open-source" href="#">Read local source</a>
+            <a class="button secondary" id="open-original" href="#">Open original</a>
+          </div>
+        </div>
+      </section>
+      <section aria-labelledby="gallery-title">
+        <div class="gallery-header">
+          <h2 id="gallery-title">All Studies</h2>
+          <div class="filters" aria-label="Filter studies">
+            <button type="button" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" data-filter="Study 1" class="secondary" aria-pressed="false">Study 1</button>
+            <button type="button" data-filter="Study 2" class="secondary" aria-pressed="false">Study 2</button>
+          </div>
+        </div>
+        <div class="gallery-grid" id="gallery-grid"></div>
+      </section>
+      <p class="footer">Mirrored from the OpenProcessing course curation for classroom viewing. Original OpenProcessing pages remain linked on each study.</p>
+    </main>
+    <script src="studies.js"></script>
+    <script>
+      const studies = window.STUDENT_STUDIES || [];
+      const grid = document.querySelector('#gallery-grid');
+      const frame = document.querySelector('#study-frame');
+      const title = document.querySelector('#viewer-title');
+      const description = document.querySelector('#viewer-description');
+      const tags = document.querySelector('#viewer-tags');
+      const openStudy = document.querySelector('#open-study');
+      const openSource = document.querySelector('#open-source');
+      const openOriginal = document.querySelector('#open-original');
+      const filterButtons = [...document.querySelectorAll('[data-filter]')];
+      function escapeHTML(value) { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;'); }
+      function makeCard(study, index) {
+        const card = document.createElement('article');
+        card.className = 'gallery-card';
+        card.dataset.study = study.study;
+        card.dataset.slug = study.slug;
+        const info = study.instructions ? study.instructions : 'Open the local mirror and explore how the sketch behaves.';
+        card.innerHTML = '<div class="swatch" style="--x: ' + (22 + (index * 13) % 58) + '%; --y: ' + (18 + (index * 17) % 54) + '%"></div>' +
+          '<div class="tag-row"><span class="tag">' + escapeHTML(study.study) + '</span><span class="tag">' + escapeHTML(study.student) + '</span></div>' +
+          '<h3>' + escapeHTML(study.title) + '</h3>' +
+          '<p>' + escapeHTML(info) + '</p>' +
+          '<div class="actions"><button type="button" data-select="' + escapeHTML(study.slug) + '">Run here</button><a class="button secondary" href="' + escapeHTML(study.path) + '">Full page</a></div>';
+        return card;
+      }
+      function renderCards() { grid.innerHTML = ''; studies.forEach((study, index) => grid.appendChild(makeCard(study, index))); }
+      function selectStudy(slug, updateHash = true) {
+        const study = studies.find((item) => item.slug === slug) || studies[0];
+        if (!study) return;
+        frame.src = study.path;
+        frame.title = study.title + ' live sketch';
+        title.textContent = study.title;
+        description.textContent = study.instructions ? study.instructions : 'Run ' + study.student + '\'s ' + study.study + ' study here, then open the local source to inspect the code.';
+        tags.innerHTML = '<span class="tag">' + escapeHTML(study.study) + '</span><span class="tag">' + escapeHTML(study.student) + '</span><span class="tag">' + escapeHTML(study.license) + '</span>';
+        openStudy.href = study.path;
+        openSource.href = study.sourcePath;
+        openOriginal.href = study.originalUrl;
+        document.querySelectorAll('[data-select]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.select === study.slug)));
+        if (updateHash) history.replaceState(null, '', '#' + study.slug);
+      }
+      function applyFilter(filter) {
+        filterButtons.forEach((button) => {
+          const isActive = button.dataset.filter === filter;
+          button.setAttribute('aria-pressed', String(isActive));
+          button.classList.toggle('secondary', !isActive);
+        });
+        document.querySelectorAll('.gallery-card').forEach((card) => card.classList.toggle('is-hidden', filter !== 'all' && card.dataset.study !== filter));
+      }
+      renderCards();
+      grid.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-select]');
+        if (!button) return;
+        selectStudy(button.dataset.select);
+        document.querySelector('.viewer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      filterButtons.forEach((button) => button.addEventListener('click', () => applyFilter(button.dataset.filter)));
+      window.addEventListener('hashchange', () => {
+        const slug = window.location.hash.replace('#', '');
+        if (slug) selectStudy(slug, false);
+      });
+      selectStudy(window.location.hash.replace('#', '') || studies[0]?.slug, false);
+    </script>
+  </body>
+</html>

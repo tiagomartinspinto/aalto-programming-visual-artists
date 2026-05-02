@@ -1,0 +1,46 @@
+Study 1 - Ella
+Mirrored from https://openprocessing.org/sketch/2901255
+License shown on OpenProcessing: CC BY-NC-SA 3.0
+
+// File: sketch.js
+let biggerCircleW = 10;
+let biggerCircleH = 10;
+let rectColorR = 255;
+let rectColorG = 255;
+let rectColorB = 255;
+let size1 = 0;
+
+function setup() {
+  createCanvas(600, 600);
+  rectMode(CENTER);
+  background(random(255), random(255), random(255));
+}
+
+function draw() {
+  noStroke();
+  fill(mouseY, mouseX, random(255));
+  ellipse(mouseX, mouseY, biggerCircleW, biggerCircleH);
+  
+  biggerCircleW = biggerCircleW + 0.1;
+  biggerCircleH = biggerCircleH + 0.1;
+  
+  fill(rectColorR, rectColorG, rectColorB);
+  rect(random(0, 600), random(0, 600), size1, size1, random(100));
+  
+  size1 = size1 + 0.05;
+
+  rectColorR = random(255);
+  rectColorG = random(255);
+  rectColorB = random(255);
+  
+  if (size1 > 40) {
+    size1 = size1 * -1;
+  }
+
+  console.log(size1);
+}
+
+function mousePressed() {
+  fill(random(255), random(255), random(255));
+  ellipse(mouseX, mouseY, random(400), random(400));
+}
