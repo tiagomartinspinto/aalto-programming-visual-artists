@@ -73,7 +73,8 @@
     <header class="topbar">
       <div class="brand">Student Studies</div>
       <nav aria-label="Gallery directory">
-        <a href="../index.html">course</a>
+        <a href="../../../index.html">archive</a>
+        <a href="../index.html">2025-2026</a>
         <a href="./" aria-current="page">student-studies</a>
         <a href="https://openprocessing.org/curation/90882">openprocessing</a>
       </nav>
@@ -166,6 +167,7 @@
       let selectedSourceText = '';
       let sourceLoadedFor = '';
       function escapeHTML(value) { return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;'); }
+      function embedPath(study) { return study.path + '?embed=1'; }
       function studySearchText(study) { return [study.title, study.student, study.study, study.instructions, study.license].join(' ').toLowerCase(); }
       function makeCard(study, index) {
         const card = document.createElement('article');
@@ -175,7 +177,7 @@
         card.dataset.student = study.student;
         card.dataset.search = studySearchText(study);
         const info = study.instructions ? study.instructions : 'Open the local mirror and explore how the sketch behaves.';
-        card.innerHTML = '<div class="mini-preview" style="--x: ' + (22 + (index * 13) % 58) + '%; --y: ' + (18 + (index * 17) % 54) + '%"><iframe loading="lazy" data-src="' + escapeHTML(study.path) + '" title="' + escapeHTML(study.title) + ' miniature preview"></iframe><span>Local preview</span></div>' +
+        card.innerHTML = '<div class="mini-preview" style="--x: ' + (22 + (index * 13) % 58) + '%; --y: ' + (18 + (index * 17) % 54) + '%"><iframe loading="lazy" data-src="' + escapeHTML(embedPath(study)) + '" title="' + escapeHTML(study.title) + ' miniature preview"></iframe><span>Local preview</span></div>' +
           '<div class="tag-row"><span class="tag">' + escapeHTML(study.study) + '</span><span class="tag">' + escapeHTML(study.student) + '</span></div>' +
           '<h3>' + escapeHTML(study.title) + '</h3>' +
           '<p>' + escapeHTML(info) + '</p>' +
@@ -213,7 +215,7 @@
       }
       function runSelectedStudy() {
         if (!activeStudy) return;
-        frame.src = activeStudy.path;
+        frame.src = embedPath(activeStudy);
         stagePlaceholder.hidden = true;
       }
       async function loadSource(study) {

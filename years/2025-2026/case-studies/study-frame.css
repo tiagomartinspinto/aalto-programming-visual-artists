@@ -27,3 +27,25 @@ canvas {
   width: auto !important;
   height: auto !important;
 }
+
+.study-home-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 20;
+  padding: 8px 10px;
+  border: 1px solid rgba(84, 214, 199, 0.44);
+  border-radius: 6px;
+  background: rgba(9, 11, 15, 0.82);
+  color: #54d6c7;
+  font-size: 13px;
+  font-weight: 780;
+  text-decoration: none;
+  backdrop-filter: blur(12px);
+}
+
+.study-home-link:hover,
+.study-home-link:focus-visible {
+  color: #f5f0e8;
+  background: rgba(84, 214, 199, 0.14);
+}
