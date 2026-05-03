@@ -3,7 +3,7 @@
 // Original: https://openprocessing.org/sketch/2901307
 // License shown on OpenProcessing: CC BY-NC-SA 3.0
 
-let words = ["gut", "FEELING", "Luonnos", "14.08.-27.09.2026"];
+let words = ["gut", "FEELING", "Luonnos"];
 
 // let font; // custom font commented out
 
