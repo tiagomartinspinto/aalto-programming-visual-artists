@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../../assets/ascii-skin.css">
   </head>
   <body>
+    <a class="skip-link" href="#gallery-title">Skip to study gallery</a>
     <header class="topbar">
       <div class="brand">Student Studies</div>
       <nav aria-label="Gallery directory">
@@ -19,7 +20,7 @@
         <a href="https://openprocessing.org/curation/90882">openprocessing</a>
       </nav>
     </header>
-    <main>
+    <main id="main-content">
       <section class="hero" aria-labelledby="page-title">
         <p class="eyebrow">Programming for Visual Artists</p>
         <h1 id="page-title">Student Studies Gallery</h1>
@@ -30,7 +31,7 @@
           <span class="stat">11 Study 2 works</span>
         </div>
       </section>
-      <section class="viewer" aria-label="Selected study viewer">
+      <section class="viewer" aria-labelledby="viewer-title" aria-describedby="viewer-status">
         <div class="stage">
           <iframe id="study-frame" loading="lazy" title="Selected student study"></iframe>
           <div class="stage-placeholder" id="stage-placeholder">
@@ -41,16 +42,17 @@
           </div>
         </div>
         <div class="viewer-info">
+          <p class="visually-hidden" id="viewer-status" aria-live="polite">Choose a study to preview it in the gallery viewer.</p>
           <div class="tag-row" id="viewer-tags"></div>
           <h2 id="viewer-title">Choose a study</h2>
           <p id="viewer-description">Select a student study below to run it in this viewer.</p>
           <div class="actions">
-            <button type="button" id="run-study">Run in viewer</button>
-            <button type="button" class="secondary" id="toggle-source">Show source here</button>
+            <button type="button" id="run-study" aria-controls="study-frame">Run in viewer</button>
+            <button type="button" class="secondary" id="toggle-source" aria-controls="source-panel" aria-expanded="false">Show source here</button>
             <a class="button secondary" id="open-study" href="#">Open study page</a>
             <a class="button secondary" id="open-original" href="#">Original on OpenProcessing</a>
           </div>
-          <div class="source-panel" id="source-panel" hidden>
+          <div class="source-panel" id="source-panel" aria-labelledby="source-title" aria-hidden="true" hidden>
             <div class="source-header">
               <strong id="source-title">Local source</strong>
               <a class="button secondary" id="open-source" href="#">Open source file</a>
@@ -74,14 +76,17 @@
         </div>
         <div class="gallery-tools" aria-label="Search student studies">
           <div class="tool-row">
-            <input id="study-search" type="search" placeholder="Search title, student, or interaction" aria-label="Search studies">
-            <select id="student-filter" aria-label="Filter by student">
+            <label class="visually-hidden" for="study-search">Search studies</label>
+            <input id="study-search" type="search" placeholder="Search title, student, or interaction" aria-describedby="gallery-status">
+            <label class="visually-hidden" for="student-filter">Filter by student</label>
+            <select id="student-filter" aria-describedby="gallery-status">
               <option value="all">All students</option>
             </select>
           </div>
         </div>
         <div class="gallery-grid" id="gallery-grid"></div>
-        <p class="empty-state" id="empty-state" hidden>No course studies match those filters.</p>
+        <p class="visually-hidden" id="gallery-status" aria-live="polite"></p>
+        <p class="empty-state" id="empty-state" role="status" hidden>No course studies match those filters.</p>
       </section>
       <p class="footer">Kept here for classroom reference by Tiago Martins Pinto. Original OpenProcessing pages remain linked on each study.</p>
     </main>
@@ -105,6 +110,8 @@
       const searchInput = document.querySelector('#study-search');
       const studentFilter = document.querySelector('#student-filter');
       const emptyState = document.querySelector('#empty-state');
+      const viewerStatus = document.querySelector('#viewer-status');
+      const galleryStatus = document.querySelector('#gallery-status');
       const filterButtons = [...document.querySelectorAll('[data-filter]')];
       let activeStudy = null;
       let activeStudyFilter = 'all';
@@ -143,7 +150,7 @@
           '<div class="tag-row"><span class="tag">' + escapeHTML(study.study) + '</span><span class="tag">' + escapeHTML(study.student) + '</span>' + conceptTags(study) + '</div>' +
           '<h3>' + escapeHTML(study.title) + '</h3>' +
           '<p>' + escapeHTML(info) + '</p>' +
-          '<div class="actions"><button type="button" data-select="' + escapeHTML(study.slug) + '">View in gallery</button><a class="button secondary" href="' + escapeHTML(study.path) + '">Open study page</a></div>';
+          '<div class="actions"><button type="button" data-select="' + escapeHTML(study.slug) + '" aria-pressed="false" aria-label="View ' + escapeHTML(study.title) + ' in gallery">View in gallery</button><a class="button secondary" href="' + escapeHTML(study.path) + '">Open study page</a></div>';
         return card;
       }
       function populateStudentFilter() {
@@ -179,11 +186,13 @@
         if (!activeStudy) return;
         frame.src = embedPath(activeStudy);
         stagePlaceholder.hidden = true;
+        viewerStatus.textContent = activeStudy.title + ' is running in the viewer.';
       }
       async function loadSource(study) {
         if (!study) return;
         sourceTitle.textContent = study.title + ' source';
         sourceCode.textContent = 'Loading local source...';
+        sourcePanel.setAttribute('aria-busy', 'true');
         try {
           const response = await fetch(study.sourcePath);
           selectedSourceText = await response.text();
@@ -192,6 +201,8 @@
         } catch (error) {
           sourceCode.textContent = 'The local source could not be loaded from this browser view. Use the source file link instead.';
           sourceLoadedFor = '';
+        } finally {
+          sourcePanel.setAttribute('aria-busy', 'false');
         }
       }
       function selectStudy(slug, updateHash = true) {
@@ -208,6 +219,8 @@
         openOriginal.href = study.originalUrl;
         stagePlaceholder.hidden = false;
         sourcePanel.hidden = true;
+        sourcePanel.setAttribute('aria-hidden', 'true');
+        toggleSource.setAttribute('aria-expanded', 'false');
         toggleSource.textContent = 'Show source here';
         sourceTitle.textContent = study.title + ' source';
         sourceCode.textContent = 'Open the source panel when you want to inspect this code.';
@@ -215,6 +228,7 @@
         sourceLoadedFor = '';
         document.querySelectorAll('.gallery-card').forEach((card) => card.classList.toggle('is-active', card.dataset.slug === study.slug));
         document.querySelectorAll('[data-select]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.select === study.slug)));
+        viewerStatus.textContent = study.title + ' selected. Use Run in viewer to start the sketch.';
         if (updateHash) history.replaceState(null, '', '#' + study.slug);
       }
       function updateVisibleCards() {
@@ -231,6 +245,7 @@
           if (isVisible) visibleCount += 1;
         });
         emptyState.hidden = visibleCount !== 0;
+        galleryStatus.textContent = visibleCount + (visibleCount === 1 ? ' study shown.' : ' studies shown.');
       }
       function applyFilter(filter) {
         activeStudyFilter = filter;
@@ -252,6 +267,8 @@
       runStudy.addEventListener('click', runSelectedStudy);
       toggleSource.addEventListener('click', () => {
         sourcePanel.hidden = !sourcePanel.hidden;
+        sourcePanel.setAttribute('aria-hidden', String(sourcePanel.hidden));
+        toggleSource.setAttribute('aria-expanded', String(!sourcePanel.hidden));
         toggleSource.textContent = sourcePanel.hidden ? 'Show source here' : 'Hide source';
         if (!sourcePanel.hidden && activeStudy && sourceLoadedFor !== activeStudy.slug) loadSource(activeStudy);
       });
