@@ -33,7 +33,7 @@
       </section>
       <section class="viewer" aria-labelledby="viewer-title" aria-describedby="viewer-status">
         <div class="stage">
-          <iframe id="study-frame" loading="lazy" title="Selected student study"></iframe>
+          <iframe id="study-frame" loading="lazy" title="Selected student study" sandbox="allow-scripts"></iframe>
           <div class="stage-placeholder" id="stage-placeholder">
             <div>
               <strong>Choose a study, then run it.</strong>
@@ -146,7 +146,7 @@
         card.dataset.concepts = studyConcepts(study).join(' ');
         card.dataset.search = studySearchText(study);
         const info = study.instructions ? study.instructions : 'Run this study here and observe how the sketch behaves before reading the source.';
-        card.innerHTML = '<div class="mini-preview" style="--x: ' + (22 + (index * 13) % 58) + '%; --y: ' + (18 + (index * 17) % 54) + '%"><iframe loading="lazy" data-src="' + escapeHTML(embedPath(study)) + '" title="' + escapeHTML(study.title) + ' miniature preview"></iframe><span>Course preview</span></div>' +
+        card.innerHTML = '<div class="mini-preview" style="--x: ' + (22 + (index * 13) % 58) + '%; --y: ' + (18 + (index * 17) % 54) + '%"><iframe loading="lazy" data-src="' + escapeHTML(embedPath(study)) + '" title="' + escapeHTML(study.title) + ' miniature preview" sandbox="allow-scripts"></iframe><span>Course preview</span></div>' +
           '<div class="tag-row"><span class="tag">' + escapeHTML(study.study) + '</span><span class="tag">' + escapeHTML(study.student) + '</span>' + conceptTags(study) + '</div>' +
           '<h3>' + escapeHTML(study.title) + '</h3>' +
           '<p>' + escapeHTML(info) + '</p>' +
