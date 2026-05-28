@@ -25,8 +25,9 @@ const emailPattern = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
 const cspPattern = /<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/i;
 const privacyNote = "Code edits run locally in your browser and are not uploaded.";
 const publicRepoWarning = "This repository is public.";
-const ownershipNote = "authored and maintained by Tiago Martins Pinto";
-const yearSectionOrder = ["current-session", "web-sketches", "lab", "comparison", "slides", "assignments", "sessions"];
+const ownershipNotePattern = /authored and maintained by Tiago Martins Pinto/i;
+const compactHomeOwnershipNote = "Authored and maintained by Tiago Martins Pinto. Used in teaching at Aalto University; not an official Aalto University publication.";
+const yearSectionOrder = ["current-session", "web-sketches", "lab", "sessions", "slides", "assignments", "comparison"];
 const yearSharedStylesheet = '<link rel="stylesheet" href="../../assets/year-common.css">';
 const yearLocalStylesheet = '<link rel="stylesheet" href="year.css">';
 const yearInterfaceSelectors = [
@@ -234,7 +235,7 @@ function checkHtml(filePath) {
       errors.push(`${rel} is missing the PDF fallback message`);
     }
     if (!/<a\b(?=[^>]*\bid=["']slide-direct-link["'])(?=[^>]*\btarget=["']_blank["'])(?=[^>]*\brel=["'][^"']*\bnoopener\b[^"']*\bnoreferrer\b[^"']*["'])[^>]*>/i.test(html)) {
-      errors.push(`${rel} is missing a safe direct PDF link for the Slides Reader`);
+      errors.push(`${rel} is missing a safe direct PDF link for the Slide Decks panel`);
     }
     const slideControls = html.match(/<div\b[^>]*\bclass=["']slide-controls["'][^>]*>([\s\S]*?)<\/div>\s*<div\b[^>]*\bclass=["']slide-viewer["']/i)?.[1] || "";
     if (!slideControls.trim()) {
@@ -258,6 +259,12 @@ function checkHtml(filePath) {
       if (!/\btarget=["']_blank["']/i.test(link[1]) || !/\brel=["'][^"']*\bnoopener\b[^"']*\bnoreferrer\b[^"']*["']/i.test(link[1])) {
         errors.push(`${rel} fallback link for ${expectedHref} is missing safe new-tab attributes`);
       }
+    }
+    if (!html.includes("<h2>Slide Decks</h2>")) {
+      errors.push(`${rel} must label the PDF section as "Slide Decks"`);
+    }
+    if (!html.includes('aria-label="Slide deck selector"')) {
+      errors.push(`${rel} is missing the standard Slide Decks aria label`);
     }
   }
 
@@ -386,10 +393,16 @@ function checkCounts() {
   if (!readFileSync(path.join(root, "README.md"), "utf8").includes(publicRepoWarning)) {
     errors.push("README.md is missing the public repository warning");
   }
-  if (!homeHtml.includes(ownershipNote)) {
-    errors.push("index.html is missing the authorship and responsibility note");
+  if (!ownershipNotePattern.test(homeHtml)) {
+    errors.push("index.html is missing the authorship note");
   }
-  if (!readFileSync(path.join(root, "README.md"), "utf8").includes(ownershipNote)) {
+  if (!homeHtml.includes(compactHomeOwnershipNote) || !/<footer\b[\s\S]*class=["'][^"']*\bfooter-note\b/i.test(homeHtml)) {
+    errors.push("index.html must keep the compact authorship note in footer metadata");
+  }
+  if (homeHtml.includes('class="site-note"')) {
+    errors.push("index.html still presents the authorship note as a large site-note block");
+  }
+  if (!ownershipNotePattern.test(readFileSync(path.join(root, "README.md"), "utf8"))) {
     errors.push("README.md is missing the authorship and responsibility note");
   }
   if (!existsSync(path.join(root, "SECURITY.md"))) errors.push("SECURITY.md is missing");

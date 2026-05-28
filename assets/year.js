@@ -48,7 +48,7 @@
     if (!card || !data.currentSession) return;
     const session = data.sessions.find((item) => item.id === data.currentSession.id) || data.currentSession;
     card.innerHTML = [
-      '<span class="course-tool-label">Session Shortcut</span>',
+      '<span class="course-tool-label">Current Session</span>',
       `<h2 id="current-session-title">${html(session.kicker)}: ${html(session.title)}</h2>`,
       `<p>${html(data.currentSession.description || session.description)}</p>`,
       linksTemplate(data.currentSession.links || session.links),
@@ -99,9 +99,9 @@
     document.querySelector(".slides-reader")?.classList.add("is-enhanced");
     controls.setAttribute("aria-label", "Slide deck controls");
     controls.innerHTML = [
-      '<p class="slide-list-label">Choose a slide deck</p>',
-      '<label class="slide-select-label" for="slide-select">Choose a slide deck</label>',
-      `<select class="slide-select" id="slide-select" aria-label="Choose a slide deck">${data.slides.map((slide, index) => `<option value="${index}">${html(slide.title)}</option>`).join("")}</select>`,
+      '<p class="slide-list-label">Choose a session deck</p>',
+      '<label class="slide-select-label" for="slide-select">Choose a session deck</label>',
+      `<select class="slide-select" id="slide-select" aria-label="Choose a session deck">${data.slides.map((slide, index) => `<option value="${index}">${html(slide.title)}</option>`).join("")}</select>`,
     ].join("");
 
     function setSlide(index) {
@@ -113,7 +113,7 @@
       direct.textContent = slide.kicker ? `Open ${slide.kicker} PDF` : "Open PDF";
       byId("slide-select").value = String(safeIndex);
       if (message) {
-        message.textContent = `Selected deck: ${slide.title}. Some browsers block embedded PDF readers, so this course site uses a direct PDF link for reliable reading.`;
+        message.textContent = `Selected: ${slide.title}. PDFs open in a regular tab because some browsers block embedded PDF readers.`;
       }
     }
 
@@ -156,7 +156,7 @@
   function searchItems() {
     const slideItems = data.slides.map((slide) => ({
       type: "slide",
-      title: `Slides - ${slide.kicker}`,
+      title: `Slide deck - ${slide.kicker}`,
       href: "#slides",
       pdf: slide.pdf,
       slideTitle: slide.title,

@@ -73,16 +73,17 @@ writeFileSync(path.join(target, "index.html"), `<!doctype html>
         <a href="./" aria-current="page">${year}</a>
         <a href="#web-sketches">sketches</a>
         <a href="#lab">lab</a>
+        <a href="#sessions">sessions</a>
         <a href="#slides">slides</a>
         <a href="#assignments">projects</a>
-        <a href="#sessions">sessions</a>
+        <a href="#comparison">notes</a>
       </nav>
     </header>
     <main>
       <section class="course-header" aria-labelledby="course-title">
         <p class="eyebrow">Aalto University, ${year}</p>
         <h1 id="course-title">${year} Course Materials</h1>
-        <p class="lede">Add sessions, web sketches, PDF slides, Processing source links, and project material as the course develops.</p>
+        <p class="lede">Add sketches, Lab material, sessions, slide decks, source files, and project material as the course develops.</p>
         <div class="byline">
           <span>Teacher: <strong>Tiago Martins Pinto</strong></span>
           <span><a href="mailto:tiago.martinspinto@aalto.fi">tiago.martinspinto@aalto.fi</a></span>
@@ -90,13 +91,13 @@ writeFileSync(path.join(target, "index.html"), `<!doctype html>
       </section>
       <section id="current-session" class="course-tools" aria-labelledby="current-session-title">
         <article class="current-session-card">
-          <span class="course-tool-label">Session Shortcut</span>
+          <span class="course-tool-label">Current Session</span>
           <h2 id="current-session-title">No current session yet</h2>
           <p>Add one in course-data.js.</p>
         </article>
         <article class="course-search" aria-labelledby="course-search-title">
-          <span class="course-tool-label">Find Course Material</span>
-          <h2 id="course-search-title">Course Search</h2>
+          <span class="course-tool-label">Search</span>
+          <h2 id="course-search-title">Search Materials</h2>
           <div class="search-controls">
             <input id="course-search-input" type="search" aria-label="Search course materials">
             <div class="search-filters">
@@ -108,17 +109,17 @@ writeFileSync(path.join(target, "index.html"), `<!doctype html>
           </div>
           <p class="search-count" id="course-search-count" aria-live="polite"></p>
           <ul class="search-results" id="course-search-results"></ul>
-          <p class="search-empty" id="course-search-empty" hidden>No course materials match that search.</p>
+          <p class="search-empty" id="course-search-empty" hidden>No materials match that search.</p>
         </article>
       </section>
       <section id="web-sketches">
         <div class="section-heading">
           <h2>Web Sketches</h2>
-          <p>Add p5.js companion sketches to course-data.js when they are ready to run in the page.</p>
+          <p>Add p5.js companion sketches when they are ready to run in the page.</p>
         </div>
         <div class="notice">
           <strong>Web-first where possible</strong>
-          <p>Use embedded sketches first. PDF decks and Processing files remain available when original classroom material is needed.</p>
+          <p>Start with embedded sketches. Open PDFs or Processing files when source material is needed.</p>
         </div>
         <div class="web-grid"></div>
       </section>
@@ -130,7 +131,7 @@ writeFileSync(path.join(target, "index.html"), `<!doctype html>
         <div class="feature-grid">
           <article class="feature-card">
             <h3>Run Code in Place</h3>
-            <p>Choose a sketch, change its JavaScript, and run the edited version in the same page.</p>
+            <p>Choose a sketch, edit the JavaScript, and run it in the same page.</p>
           </article>
           <article class="feature-card">
             <h3>Change One Thing at a Time</h3>
@@ -142,19 +143,19 @@ writeFileSync(path.join(target, "index.html"), `<!doctype html>
           </article>
         </div>
       </section>
-      <section id="comparison">
+      <section id="sessions">
         <div class="section-heading">
-          <h2></h2>
-          <p></p>
+          <h2>Sessions</h2>
+          <p>Use a session page when the week's slides, sketches, and Processing material are ready together.</p>
         </div>
-        <div class="feature-grid"></div>
+        <div class="sessions"></div>
       </section>
       <section id="slides">
         <div class="section-heading">
-          <h2>Slides Reader</h2>
-          <p>Choose a deck, then open the PDF in your browser's reader. This avoids blocked embedded PDF views in stricter browsers.</p>
+          <h2>Slide Decks</h2>
+          <p>Choose a session deck and open it as a PDF.</p>
         </div>
-        <div class="slides-reader" aria-label="PDF slides selector">
+        <div class="slides-reader" aria-label="Slide deck selector">
           <div class="slide-controls">
             <p class="slide-list-label">No slide decks have been added yet.</p>
           </div>
@@ -168,8 +169,8 @@ writeFileSync(path.join(target, "index.html"), `<!doctype html>
               </div>
             </div>
             <div class="pdf-panel" id="slide-panel" role="region" aria-labelledby="slide-title">
-              <span class="pdf-kicker">PDF slides</span>
-              <p id="slide-panel-message">Some browsers block embedded PDF readers. Use the Open PDF button to read the selected deck in a regular browser tab.</p>
+              <span class="pdf-kicker">Slide Decks</span>
+              <p id="slide-panel-message">PDFs open in a regular tab because some browsers block embedded PDF readers.</p>
             </div>
           </div>
         </div>
@@ -181,12 +182,12 @@ writeFileSync(path.join(target, "index.html"), `<!doctype html>
         </div>
         <div class="feature-grid"></div>
       </section>
-      <section id="sessions">
+      <section id="comparison">
         <div class="section-heading">
-          <h2>Sessions</h2>
-          <p>Use a session page when the week's slides, runnable sketches, and Processing material are ready together.</p>
+          <h2></h2>
+          <p></p>
         </div>
-        <div class="sessions"></div>
+        <div class="feature-grid"></div>
       </section>
       <footer class="footer"><span>Programming for Visual Artists, Aalto University. Course material by Tiago Martins Pinto.</span><span data-last-updated>Last updated: automatic</span></footer>
     </main>

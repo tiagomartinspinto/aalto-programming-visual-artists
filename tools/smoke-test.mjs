@@ -1,4 +1,5 @@
 const baseUrl = process.env.PVA_SITE_URL || "http://127.0.0.1:8123";
+const expectedYearSections = ["current-session", "web-sketches", "lab", "sessions", "slides", "assignments", "comparison"];
 
 async function loadPlaywright() {
   try {
@@ -52,7 +53,7 @@ async function yearStructure(page, path) {
       return element ? [...element.children].map((child) => `${child.tagName.toLowerCase()}#${child.id || ""}.${className(child)}`) : [];
     };
     return {
-      sections: [...document.querySelectorAll("main > section")].map((section) => section.id),
+      sections: [...document.querySelectorAll("main > section")].map((section) => section.id).filter(Boolean),
       navHrefs: [...document.querySelectorAll(".topbar nav a")].map((link) => link.getAttribute("href")),
       searchFilters: [...document.querySelectorAll("[data-search-type]")].map((button) => button.dataset.searchType),
       currentSessionChildren: childSignature(".current-session-card"),
@@ -100,7 +101,22 @@ function expectSameStructure(left, right, label) {
   }
 }
 
+function expectSectionOrder(structure, label) {
+  const actual = JSON.stringify(structure.sections);
+  const expected = JSON.stringify(expectedYearSections);
+  if (actual !== expected) {
+    throw new Error(`${label} section order changed: ${actual}`);
+  }
+}
+
 async function expectSlideReader(page, year, expectedDecks) {
+  const heading = await page.locator("#slides h2").textContent();
+  if (heading?.trim() !== "Slide Decks") {
+    throw new Error(`${year} must label the PDF section as Slide Decks`);
+  }
+  if ((await page.locator(".slides-reader").getAttribute("aria-label")) !== "Slide deck selector") {
+    throw new Error(`${year} Slide Decks panel has the wrong aria label`);
+  }
   await expectCount(page, "#slide-select option", expectedDecks, `${year} slide deck options`);
   await expectCount(page, "#slide-direct-link", 1, `${year} direct PDF link`);
   await expectCount(page, "#slide-panel-message", 1, `${year} PDF fallback message`);
@@ -221,6 +237,19 @@ async function expectSessionPdfPanel(page, path, label) {
   }
 }
 
+async function expectHomeMetadata(page) {
+  await expectCount(page, ".footer .footer-note", 1, "homepage footer authorship note");
+  if ((await page.locator(".site-note").count()) !== 0) {
+    throw new Error("homepage still presents authorship as a large site-note block");
+  }
+  const note = (await page.locator(".footer .footer-note").textContent())?.trim() || "";
+  if (!note.includes("Authored and maintained by Tiago Martins Pinto") ||
+      !note.includes("not an official Aalto University publication") ||
+      note.length > 180) {
+    throw new Error("homepage authorship note is missing or too prominent");
+  }
+}
+
 const { chromium } = await loadPlaywright();
 const browser = await chromium.launch();
 const page = await browser.newPage();
@@ -228,6 +257,7 @@ const page = await browser.newPage();
 try {
   await page.goto(site("/"), { waitUntil: "domcontentloaded" });
   await expectCount(page, "h1", 1, "homepage h1");
+  await expectHomeMetadata(page);
 
   for (const viewport of [{ width: 1280, height: 800 }, { width: 820, height: 900 }, { width: 390, height: 844 }]) {
     await expectFallbackSlideList(browser, "/years/2024-2025/", "2024-2025", 8, viewport);
@@ -249,12 +279,16 @@ try {
     return structure;
   })();
   expectSameStructure(noJs2024, noJs2025, "No-JavaScript year page");
+  expectSectionOrder(noJs2024, "2024-2025 no-JS");
+  expectSectionOrder(noJs2025, "2025-2026 no-JS");
 
   const enhanced2024 = await yearStructure(page, "/years/2024-2025/");
   const enhanced2025 = await yearStructure(page, "/years/2025-2026/");
   expectSameStructure(enhanced2024, enhanced2025, "Enhanced year page");
+  expectSectionOrder(enhanced2024, "2024-2025 enhanced");
+  expectSectionOrder(enhanced2025, "2025-2026 enhanced");
   if (enhanced2024.shortcutButtons.length || enhanced2025.shortcutButtons.length) {
-    throw new Error("Enhanced Slides Reader must not render per-session shortcut buttons in either year");
+    throw new Error("Enhanced Slide Decks controls must not render per-session shortcut buttons in either year");
   }
 
   await page.goto(site("/years/2024-2025/"), { waitUntil: "domcontentloaded" });

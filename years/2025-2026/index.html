@@ -28,9 +28,10 @@
         <a href="./" aria-current="page">2025-2026</a>
         <a href="#web-sketches">sketches</a>
         <a href="#lab">lab</a>
+        <a href="#sessions">sessions</a>
         <a href="#slides">slides</a>
         <a href="#assignments">projects</a>
-        <a href="#sessions">sessions</a>
+        <a href="#comparison">notes</a>
       </nav>
     </header>
 
@@ -38,7 +39,7 @@
       <section class="course-header" aria-labelledby="course-title">
         <p class="eyebrow">Aalto University, 2025-2026</p>
         <h1 id="course-title">2025-2026 Course Materials</h1>
-        <p class="lede">Sessions, web sketches, Lab, PDF slides, Processing source links, and project prompts.</p>
+        <p class="lede">Sketches, Lab, sessions, slide decks, source files, and project prompts.</p>
         <div class="byline">
           <span>Teacher: <strong>Tiago Martins Pinto</strong></span>
           <span><a href="mailto:tiago.martinspinto@aalto.fi">tiago.martinspinto@aalto.fi</a></span>
@@ -47,18 +48,18 @@
 
       <section id="current-session" class="course-tools" aria-labelledby="current-session-title">
         <article class="current-session-card">
-          <span class="course-tool-label">Session Shortcut</span>
+          <span class="course-tool-label">Current Session</span>
           <h2 id="current-session-title">Session 06: Arrays, objects, and particles</h2>
           <p>Session 06 includes arrays, objects, particle systems, and motion fields.</p>
           <div class="links">
             <a class="primary" href="sessions/session-06/">Open Session 06</a>
-            <a href="#slides" data-title="Session 06 - Arrays, objects, and particles" data-pdf="slides/session-06.pdf">Read Session 06 slides</a>
+            <a href="#slides" data-title="Session 06 - Arrays, objects, and particles" data-pdf="slides/session-06.pdf">Open Session 06 deck</a>
           </div>
         </article>
         <article class="course-search" aria-labelledby="course-search-title">
-          <span class="course-tool-label">Find Course Material</span>
-          <h2 id="course-search-title">Course Search</h2>
-          <p>Search the 2025-2026 materials by topic, format, or session.</p>
+          <span class="course-tool-label">Search</span>
+          <h2 id="course-search-title">Search Materials</h2>
+          <p>Search by topic, format, or session.</p>
           <div class="search-controls">
             <input id="course-search-input" type="search" placeholder="Search loops, mouse, particles, recursion..." aria-label="Search course materials">
             <div class="search-filters" aria-label="Filter course search">
@@ -70,19 +71,19 @@
           </div>
           <p class="search-count" id="course-search-count" aria-live="polite"></p>
           <ul class="search-results" id="course-search-results"></ul>
-          <p class="search-empty" id="course-search-empty" hidden>No course materials match that search.</p>
+          <p class="search-empty" id="course-search-empty" hidden>No materials match that search.</p>
         </article>
       </section>
 
       <section id="web-sketches">
         <div class="section-heading">
           <h2>Web Sketches</h2>
-          <p>These p5.js companion sketches run directly in the page.</p>
+          <p>Run p5.js companion sketches in the page.</p>
         </div>
 
         <div class="notice">
           <strong>Web-first where possible</strong>
-          <p>Use the embedded sketches first. PDF decks and Processing files remain available when you need the original classroom material.</p>
+          <p>Start with the embedded sketches. Open PDFs or Processing files when you need source material.</p>
         </div>
 
         <div class="web-grid">
@@ -92,12 +93,12 @@
       <section id="lab">
         <div class="section-heading">
           <h2>Sketch Lab</h2>
-          <p>Edit the p5.js companion sketches directly in the browser.</p>
+          <p>Edit p5.js companion sketches directly in the browser.</p>
         </div>
         <div class="feature-grid">
           <article class="feature-card">
-            <h3>Run Your Code in Place</h3>
-            <p>Choose a sketch, edit its JavaScript, and press Run your changes. The preview updates in the same page.</p>
+            <h3>Run Code in Place</h3>
+            <p>Choose a sketch, edit the JavaScript, and run it in the same page.</p>
             <div class="links"><a class="primary" href="web/lab.html">Open the Lab</a></div>
           </article>
           <article class="feature-card">
@@ -111,23 +112,23 @@
         </div>
       </section>
 
-      <section id="comparison">
+      <section id="sessions">
         <div class="section-heading">
-          <h2></h2>
-          <p></p>
+          <h2>Sessions</h2>
+          <p>Open a week when you want slides, sketches, instructions, and Processing material together.</p>
         </div>
-        <div class="feature-grid">
+        <div class="sessions">
         </div>
       </section>
 
       <section id="slides">
         <div class="section-heading">
-          <h2>Slides Reader</h2>
-          <p>Choose a deck, then open the PDF in your browser's reader. This avoids blocked embedded PDF views in stricter browsers.</p>
+          <h2>Slide Decks</h2>
+          <p>Choose a session deck and open it as a PDF.</p>
         </div>
-        <div class="slides-reader" aria-label="PDF slides selector">
+        <div class="slides-reader" aria-label="Slide deck selector">
           <div class="slide-controls">
-            <p class="slide-list-label">Choose a slide deck</p>
+            <p class="slide-list-label">Choose a session deck</p>
             <ul class="slide-fallback-list" aria-label="Slide deck PDF links">
               <li><a href="slides/session-01.pdf" target="_blank" rel="noopener noreferrer">Session 01 - Drawing, coordinates, and first functions</a></li>
               <li><a href="slides/session-02.pdf" target="_blank" rel="noopener noreferrer">Session 02 - Mouse input and changing color</a></li>
@@ -147,8 +148,8 @@
               </div>
             </div>
             <div class="pdf-panel" id="slide-panel" role="region" aria-labelledby="slide-title">
-              <span class="pdf-kicker">PDF slides</span>
-              <p id="slide-panel-message">Some browsers block embedded PDF readers. Use the Open PDF button to read the selected deck in a regular browser tab.</p>
+              <span class="pdf-kicker">Slide Decks</span>
+              <p id="slide-panel-message">PDFs open in a regular tab because some browsers block embedded PDF readers.</p>
             </div>
           </div>
         </div>
@@ -175,12 +176,12 @@
         </div>
       </section>
 
-      <section id="sessions">
+      <section id="comparison">
         <div class="section-heading">
-          <h2>Sessions</h2>
-          <p>Use a session page when you want that week's slides, web sketches, instructions, and Processing material together.</p>
+          <h2></h2>
+          <p></p>
         </div>
-        <div class="sessions">
+        <div class="feature-grid">
         </div>
       </section>
 
