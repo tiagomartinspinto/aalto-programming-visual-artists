@@ -10,6 +10,6 @@
     "check": "npm run build:index && npm run check:site && npm run check:assets"
   },
   "devDependencies": {
-    "playwright": "^1.60.0"
+    "playwright": "^1.61.1"
   }
 }
