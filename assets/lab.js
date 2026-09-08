@@ -35,6 +35,27 @@
     status.classList.toggle("error", isError);
   }
 
+  // Wraps a student-defined p5 callback (setup, draw, mousePressed, ...) so
+  // that a runtime error thrown while it runs is reported in the status bar
+  // instead of failing silently. p5 calls draw() on its own animation loop,
+  // outside the synchronous try/catch below, so this is the only place that
+  // can catch an error there. Once one callback fails, every other wrapped
+  // callback becomes a no-op (and the loop stops) until the student presses
+  // Run or Reset, so a broken sketch does not keep re-reporting the same
+  // error on every frame or click.
+  function wrapCallback(p, runState, name, fn) {
+    return (...args) => {
+      if (runState.failed) return;
+      try {
+        return fn.apply(p, args);
+      } catch (error) {
+        runState.failed = true;
+        writeStatus(`Error in ${name}(): ${error.message}`, true);
+        if (typeof p.noLoop === "function") p.noLoop();
+      }
+    };
+  }
+
   function render(codeText) {
     if (activeP5) {
       activeP5.remove();
@@ -45,21 +66,25 @@
     const mount = preview.querySelector("#sketch");
     writeStatus("Running your sketch with the local p5.js runtime...");
 
+    const runState = { failed: false };
+
     try {
       activeP5 = new p5((p) => {
-        const install = new Function("p", [
+        const install = new Function("p", "wrapCallback", "runState", [
           "with (p) {",
           codeText,
-          "if (typeof preload === 'function') p.preload = preload;",
-          "if (typeof setup === 'function') p.setup = setup;",
-          "if (typeof draw === 'function') p.draw = draw;",
-          "if (typeof mousePressed === 'function') p.mousePressed = mousePressed;",
-          "if (typeof keyPressed === 'function') p.keyPressed = keyPressed;",
+          "if (typeof preload === 'function') p.preload = wrapCallback(p, runState, 'preload', preload);",
+          "if (typeof setup === 'function') p.setup = wrapCallback(p, runState, 'setup', setup);",
+          "if (typeof draw === 'function') p.draw = wrapCallback(p, runState, 'draw', draw);",
+          "if (typeof mousePressed === 'function') p.mousePressed = wrapCallback(p, runState, 'mousePressed', mousePressed);",
+          "if (typeof keyPressed === 'function') p.keyPressed = wrapCallback(p, runState, 'keyPressed', keyPressed);",
           "}",
         ].join("\n"));
-        install(p);
+        install(p, wrapCallback, runState);
       }, mount);
-      writeStatus("Your sketch is running. Your edits stay in this browser.");
+      if (!runState.failed) {
+        writeStatus("Your sketch is running. Your edits stay in this browser.");
+      }
     } catch (error) {
       writeStatus(`Error: ${error.message}`, true);
     }
@@ -133,15 +158,6 @@
     document.querySelector("#reset-button")?.addEventListener("click", () => {
       code.value = originalCode;
       render(originalCode);
-    });
-
-    window.addEventListener("message", (event) => {
-      if (event.data && event.data.type === "sketch-running") {
-        writeStatus("Your sketch is running. Your edits stay in this browser.");
-      }
-      if (event.data && event.data.type === "sketch-error") {
-        writeStatus(`Error: ${event.data.message} at line ${event.data.line || "?"}`, true);
-      }
     });
 
     loadSketch(params.get("sketch") || lab.defaultSketch || courseSketches[0].id);

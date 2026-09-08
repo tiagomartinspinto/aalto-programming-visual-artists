@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-08 (correction pass)
+
+- Fixed a Mouse Shapes bug where `circleSize`/`squareSize` were declared `const` in the p5.js sketch while the worksheet instructed students to reassign them; both are now `let`.
+- Added a short Color House instruction sheet with a plain-language variable definition, the only Session 2 sketch previously missing one.
+- Added an explicit Session 1 -> Session 2 bridge to the Session 02 page, with one short echo in the Mouse Shapes worksheet.
+- Reworded the Face Exercise debugging moment so it no longer promises one exact error string.
+- Added a Mouse Shapes worksheet step asking students to focus on the background/mouseX relationship before the rest of the sketch, to reduce first-run overload.
+- Fixed the Sketch Lab (`assets/lab.js`) so runtime errors thrown inside `draw()`, `setup()`, `preload()`, `mousePressed()`, or `keyPressed()` are now reported in the status bar instead of failing silently; removed a dead, unused `postMessage` error-reporting path from the same file.
+- Added browser regression coverage for both the runtime-error reporting fix and the historical Mouse Shapes reassignment bug.
+
 ## 2026-09-08
 
 - Hardened repository validation and browser smoke testing ahead of adding a new academic year: narrowed the legacy-content check to exact filenames/links instead of ordinary vocabulary, made year checks exact per year, strengthened `course-data.js` integrity checks, made the browser smoke suite discover published years automatically, and made `npm run smoke:browser` start its own local server. No visible site changes.

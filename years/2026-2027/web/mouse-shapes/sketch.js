@@ -4,8 +4,8 @@
 // This sketch reads those two variables and uses map() to turn them
 // into everything else: two positions and three colors.
 
-const circleSize = 50;
-const squareSize = 50;
+let circleSize = 50;
+let squareSize = 50;
 
 function setup() {
   const canvas = createCanvas(800, 600);

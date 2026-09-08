@@ -15,15 +15,27 @@ watch the background, the circle, and the square all change.
 
 ---
 
-STEP 2 - Find the Variables
+STEP 2 - Focus on One Thing First
 
-Find circleX, circleY, squareX, and squareY in draw(). These are
-variables: named values that get a new number every single frame,
-instead of staying fixed like circleSize does.
+That is a lot happening at once. Move the mouse left and right slowly
+and watch only the background color - ignore the circle and square for
+a moment. Find the line in draw() that computes bgR from mouseX. That
+one map() call is the only thing responsible for what you just
+watched.
 
 ---
 
-STEP 3 - Replace a Fixed Value with mouseX
+STEP 3 - Find the Variables
+
+Now look at the rest of draw(). Find circleX, circleY, squareX, and
+squareY. These are variables: named values that get a new number every
+single frame, instead of staying fixed like circleSize does - the same
+idea as x and y in drawFace() during Session 01, except now the mouse
+supplies the numbers instead of you typing them in.
+
+---
+
+STEP 4 - Replace a Fixed Value with mouseX
 
 Change one of the lines that use circleSize (a fixed number) so it
 also depends on mouseX, for example by making the circle grow as the
@@ -33,13 +45,13 @@ mouse moves right:
 
 ---
 
-STEP 4 - Replace Another Value with mouseY
+STEP 5 - Replace Another Value with mouseY
 
 Do the same for something driven by height, using mouseY instead.
 
 ---
 
-STEP 5 - Use map() to Convert a Range
+STEP 6 - Use map() to Convert a Range
 
 map() takes a value in one range and converts it to a value in
 another range. Find every map() call in the sketch and, for one of
@@ -50,7 +62,7 @@ result changes:
 
 ---
 
-STEP 6 - Change the Visual Result
+STEP 7 - Change the Visual Result
 
 Combine two of your changes so far into one new visual behavior -
 for example, make the square's color depend on the circle's position
@@ -58,7 +70,7 @@ instead of its own.
 
 ---
 
-STEP 7 - Add One Click-Driven Change
+STEP 8 - Add One Click-Driven Change
 
 Add a mousePressed() function (see Color House for the pattern) that
 changes one variable - for example circleSize - to a new random value
@@ -66,7 +78,7 @@ every time you click.
 
 ---
 
-STEP 8 - Create Your Own Responsive Composition
+STEP 9 - Create Your Own Responsive Composition
 
 Add a third shape that reacts to the mouse in its own way. Reuse
 map() rather than inventing a new technique.

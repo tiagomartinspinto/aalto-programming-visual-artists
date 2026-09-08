@@ -387,6 +387,38 @@ async function checkBouncingBallLabRegression(browser) {
   }
 }
 
+// --- Historical regression test ----------------------------------------------
+// Pinned to one known year/sketch, not the generic discovery above: this
+// guards a specific past bug where circleSize/squareSize were declared
+// `const` in the p5.js sketch while the worksheet instructed students to
+// reassign them (e.g. `circleSize = map(mouseX, 0, width, 10, 120);`),
+// which threw "Assignment to constant variable." on every animation frame.
+// Future years are not required to reproduce this exact scenario; if this
+// fixture is ever removed, the check quietly skips instead of failing.
+async function checkMouseShapesReassignmentRegression(browser) {
+  const year = "2026-2027";
+  const yearPath = path.join(root, "years", year);
+  if (!existsSync(path.join(yearPath, "web", "lab.html")) || !existsSync(path.join(yearPath, "web", "mouse-shapes", "sketch.js"))) {
+    return;
+  }
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  try {
+    await page.goto(site(`/years/${year}/web/lab.html?sketch=mouse-shapes`), { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("canvas", { timeout: 10000 });
+    const code = page.locator("#code");
+    await code.fill(`${await code.inputValue()}\nfunction draw() { circleSize = map(mouseX, 0, width, 10, 120); background(220); }`);
+    await page.locator("#run-button").click();
+    await page.waitForTimeout(500);
+    const status = (await page.locator("#status").textContent()) || "";
+    if (status.includes("constant variable") || !status.includes("Your sketch is running")) {
+      throw new Error(`${year} mouse-shapes Lab regression: reassigning circleSize inside draw() did not run cleanly: "${status}"`);
+    }
+  } finally {
+    await context.close();
+  }
+}
+
 const { chromium } = await loadPlaywright();
 const browser = await chromium.launch();
 const page = await browser.newPage();
@@ -471,6 +503,30 @@ try {
       throw new Error(`${labYear.year} Lab did not report the edited sketch as running`);
     }
 
+    // A runtime error thrown inside draw() happens on p5's own animation
+    // frame, outside the synchronous try/catch around sketch construction -
+    // assets/lab.js must catch it at the callback boundary instead, or the
+    // canvas freezes silently while the status bar keeps claiming the sketch
+    // is running. Deterministic because the thrown message is fixed by this
+    // test, not by inspecting console output.
+    await code.fill(`${await code.inputValue()}\nfunction draw() { throw new Error("Smoke test draw error"); }`);
+    await page.locator("#run-button").click();
+    await page.waitForTimeout(500);
+    const errorStatus = (await page.locator("#status").textContent()) || "";
+    if (!errorStatus.includes("Smoke test draw error") || errorStatus.includes("Your sketch is running")) {
+      throw new Error(`${labYear.year} Lab did not report a runtime error thrown inside draw(): "${errorStatus}"`);
+    }
+    await page.waitForTimeout(800);
+    const stillErrorStatus = (await page.locator("#status").textContent()) || "";
+    if (!stillErrorStatus.includes("Smoke test draw error") || stillErrorStatus.includes("Your sketch is running")) {
+      throw new Error(`${labYear.year} Lab falsely reported "running" again after a runtime error: "${stillErrorStatus}"`);
+    }
+    await page.locator("#reset-button").click();
+    await page.waitForTimeout(300);
+    if (!(await page.locator("#status").textContent()).includes("Your sketch is running")) {
+      throw new Error(`${labYear.year} Lab did not recover to "running" after Reset`);
+    }
+
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(site(labYear.urlPath), { waitUntil: "domcontentloaded" });
     if (!(await page.locator('nav a[href="#lab"]').isVisible())) {
@@ -481,6 +537,7 @@ try {
   }
 
   await checkBouncingBallLabRegression(browser);
+  await checkMouseShapesReassignmentRegression(browser);
 
   console.log("Browser smoke test passed.");
 } finally {

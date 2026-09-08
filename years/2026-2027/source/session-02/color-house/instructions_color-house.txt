@@ -1,0 +1,53 @@
+Programming for Visual Artists
+Session 02 - Color House
+
+You have been given a working sketch where a click changes two colors.
+Your task is to find the two variables that store those colors and see
+how clicking changes them.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Click inside the canvas a
+few times and watch the house and the sky change color.
+
+---
+
+STEP 2 - Find the Variables
+
+Find houseColor and skyColor near the top of the file. A variable is a
+named place where you keep a value so you can read or change it later.
+Right now they hold a pink house and a pale blue sky.
+
+---
+
+STEP 3 - Read mousePressed()
+
+mousePressed() runs once, the moment you click. It does not draw
+anything itself - it only gives houseColor and skyColor new values.
+draw() reads those values on the very next frame, so the shapes update
+without draw() ever needing to know a click happened.
+
+---
+
+STEP 4 - Change a Range
+
+Change one of the random() ranges, for example random(150, 255) to
+random(0, 100), and click again. Notice what part of the color that
+range controls.
+
+---
+
+STEP 5 - Make One Visual Choice
+
+Pick one value in the sketch and set it deliberately instead of
+randomly - for example, always make the sky a color you choose. Click
+to confirm the house still changes while your sky stays fixed.
+
+---
+
+Nothing about rect() or triangle() changes when you click - only the
+two values they read do. That is what a variable is for: a name you
+can point at a different value without rewriting the drawing
+underneath it.

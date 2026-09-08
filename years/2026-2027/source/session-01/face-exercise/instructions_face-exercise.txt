@@ -84,11 +84,18 @@ your version still benefits from one shared recipe.
 DEBUGGING MOMENT
 
 If you add a parameter to drawFace() and only update the function
-definition (not every call in draw()), Processing/the browser console
-will report an error such as "not enough arguments" or the sketch will
-simply stop drawing. Read the error message, find the call that is
-missing the new value, and add it. This is normal - it happens to
-everyone who edits functions with parameters.
+definition (not every call in draw()), something will go wrong - but
+the exact wording Processing or the browser console uses can vary, and
+it will not always obviously mention "parameter" or "argument". When
+that happens:
+
+  1. Notice what you just changed - you added a parameter.
+  2. Compare the function definition with every call to drawFace() in
+     draw(). Does each call now provide a value for every parameter?
+  3. Fix the call that is missing a value, and run again.
+
+This is normal - it happens to everyone who edits functions with
+parameters.
 
 ---
 
