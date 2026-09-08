@@ -259,5 +259,27 @@ window.COURSE_DATA = {
     },
   ],
   slides: [],
-  searchExtras: [],
+  searchExtras: [
+    {
+      type: "project",
+      title: "Project Brief 1 - Interactive Visual Composition",
+      href: "projects/index.html#brief-1",
+      description: "Make something that responds to the viewer, after Sessions 01-03.",
+      keywords: "project brief interactive composition mouse conditionals state",
+    },
+    {
+      type: "project",
+      title: "Project Brief 2 - Generative Visual System",
+      href: "projects/index.html#brief-2",
+      description: "Design a rule that produces a family of related results, after Sessions 04-06.",
+      keywords: "project brief generative system loops functions random noise recursion",
+    },
+    {
+      type: "project",
+      title: "Final Project",
+      href: "projects/index.html#final-project",
+      description: "One focused personal work, after Session 07. Complexity is not the goal.",
+      keywords: "final project synthesis assessment",
+    },
+  ],
 };

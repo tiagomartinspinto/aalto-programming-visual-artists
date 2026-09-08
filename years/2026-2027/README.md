@@ -39,12 +39,17 @@ This year is in progress. Sessions are added deliberately, one at a time.
 - [Array of dots](web/array-of-dots/)
 - [Particles follow](web/particles-follow/)
 
+## Projects
+
+The seven core sessions are followed by [Project Brief 1, Project Brief 2, the Final Project, and a qualitative assessment framework](projects/index.html). Class time after Session 07 is project studio (development, debugging, critique) rather than a new session.
+
 ## Repository Structure
 
 - `source/session-XX/` contains Processing `.pde` files and instruction text files.
 - `web/` contains browser-friendly p5.js companion sketches.
 - `web/lab.html` contains the in-browser code editor.
 - `sessions/` contains focused landing pages for each session.
+- `projects/` contains the project briefs, final project, and assessment framework.
 - `preview-assets/` contains guidance and a place for exported screenshots or GIFs.
 
 No slide decks have been added yet.

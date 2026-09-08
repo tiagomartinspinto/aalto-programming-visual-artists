@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-08 (projects and assessment)
+
+- Added 2026-2027 project briefs, Final Project guidance, and a qualitative assessment framework, closing the last gap from the full-course review. Complexity is explicitly not the goal; noise() and recursion are explicitly optional in Project Brief 2. No grading percentages, deadlines, or submission mechanism were invented - none exist in the repository, so scheduling and grading weight remain teacher/institution decisions.
+- Fixed the Session 06 bridge wording so it names noise's lineage (Session 02's map(), Session 04's grids) alongside recursion's (Session 05's functions).
+
 ## 2026-09-08 (session 7)
 
 - Added 2026-2027 Session 7 covering arrays, objects and particle systems (Array of Dots, Particles Follow), completing the currently-planned core curriculum (Sessions 1-7). Each sketch has a Processing comparison, an independent worksheet, and a debugging moment.
