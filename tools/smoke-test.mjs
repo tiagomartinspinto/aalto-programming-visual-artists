@@ -512,6 +512,46 @@ async function checkRecursiveTreeSafetyNet(browser) {
   }
 }
 
+// Pinned to 2026-2027's Particles Follow: guards against unbounded particle
+// growth if a student increases emission (e.g. pushing several particles
+// per frame instead of one, a natural extension of the worksheet's emission
+// step) combined with a slower fade rate. Particle creation must stay
+// gated by MAX_PARTICLES regardless of how many push() calls a frame makes,
+// or an aggressive edit can grow the array and the draw cost per frame
+// without bound. Timeout-guarded so a real regression fails clearly instead
+// of hanging the test suite. Skips quietly if this fixture is ever removed.
+async function checkParticlesFollowSafetyNet(browser) {
+  const year = "2026-2027";
+  const yearPath = path.join(root, "years", year);
+  if (!existsSync(path.join(yearPath, "web", "lab.html")) || !existsSync(path.join(yearPath, "web", "particles-follow", "sketch.js"))) {
+    return;
+  }
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  try {
+    await page.goto(site(`/years/${year}/web/lab.html?sketch=particles-follow`), { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("canvas", { timeout: 10000 });
+    const code = page.locator("#code");
+    const aggressive = (await code.inputValue())
+      .replace("this.life -= 3;", "this.life -= 0.01;")
+      .replace(
+        "  if (particles.length < MAX_PARTICLES) {\n    particles.push(new Particle(mouseX, mouseY));\n  }",
+        "  for (let n = 0; n < 20; n++) {\n    if (particles.length < MAX_PARTICLES) {\n      particles.push(new Particle(mouseX, mouseY));\n    }\n  }"
+      );
+    await code.fill(aggressive);
+    await page.locator("#run-button").click();
+    await page.mouse.move(300, 200);
+    await page.waitForTimeout(2000);
+    await withTimeout(
+      page.evaluate(() => document.title.length >= 0),
+      5000,
+      `${year} particles-follow Lab regression: page became unresponsive with aggressive emission and a slow fade rate (MAX_PARTICLES gate missing?)`
+    );
+  } finally {
+    await context.close();
+  }
+}
+
 const { chromium } = await loadPlaywright();
 const browser = await chromium.launch();
 const page = await browser.newPage();
@@ -639,6 +679,7 @@ try {
   await checkMouseShapesReassignmentRegression(browser);
   await checkBouncingBallStateRegression(browser);
   await checkRecursiveTreeSafetyNet(browser);
+  await checkParticlesFollowSafetyNet(browser);
 
   console.log("Browser smoke test passed.");
 } finally {

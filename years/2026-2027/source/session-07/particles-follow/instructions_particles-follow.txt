@@ -1,0 +1,131 @@
+Programming for Visual Artists
+Session 07 - Particles Follow
+
+You have been given a system where the mouse leaves a trail of small
+particles that move, fade, and disappear. Your task is to find where
+particles are described, where they are stored, and how they are
+managed over time.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser) and move the mouse around.
+
+---
+
+STEP 2 - Find the Particle Recipe
+
+Find class Particle near the bottom. Read it as "the recipe for one
+particle" - the same idea as a function in Session 05, except this
+recipe also carries its own values (x, y, speedX, speedY, life)
+instead of just drawing something once.
+
+  constructor(startX, startY) - the starting values for a new particle
+  update()                    - how one particle changes every frame
+  display()                   - how one particle draws itself
+  isDead()                    - how one particle knows it is finished
+
+---
+
+STEP 3 - Find Where All the Particles Are Stored
+
+Find particles near the top: an array, exactly like dots in Array of
+Dots, except this one holds Particle objects instead of positions.
+Ask yourself: where does the code say how many particles currently
+exist? (Hint: particles.length.)
+
+---
+
+STEP 4 - Find Where a New Particle Is Added
+
+Find particles.push(new Particle(mouseX, mouseY)); in draw(). This
+runs once per frame, which is why particles keep appearing as long as
+you move the mouse.
+
+---
+
+STEP 5 - Find the Loop That Visits Every Particle
+
+Find the for loop below it. It counts backward through the array so
+that removing one particle does not skip the next one - update(),
+display(), and the isDead() check all happen inside this one loop, for
+every particle currently in the array.
+
+---
+
+STEP 6 - Change a Starting Value
+
+Change speedX or speedY's random range in the constructor, or the
+starting life value, and run it again.
+
+---
+
+STEP 7 - Change How Particles Move
+
+Change update() - for example, add a constant downward pull
+(this.speedY += 0.02;) so particles drift down like falling dust.
+
+---
+
+STEP 8 - Change the Lifetime
+
+Change life -= 3 to a smaller or larger number. A smaller number makes
+particles fade slower and live longer; a larger number makes them
+disappear almost immediately. Watch fill(255, this.life) - life is
+being reused directly as transparency, so a lower life is a fainter
+particle.
+
+---
+
+STEP 9 - Change How Particles Look
+
+Change display() - size, shape, or color.
+
+---
+
+STEP 10 - Debugging Moment: Update vs. Display
+
+Delete (or comment out) the line particles[i].update(); inside the
+loop, leaving particles[i].display() and the isDead() check in place.
+Run it and move the mouse around the canvas.
+
+The sketch will not crash and no error will appear - but every
+particle you create stays exactly where it was born, fully bright,
+forever: nothing moves and nothing fades away. Ask yourself:
+
+  What does update() actually change?
+  What does display() actually change?
+  If update() never runs, what about a particle CAN still change?
+
+update() is what changes x, y, and life every frame; display() only
+draws whatever those values currently are. Skipping update() does not
+stop a particle from being drawn - it stops it from ever becoming
+anything different. Put the line back and confirm particles move and
+fade again.
+
+---
+
+STEP 11 - Make Your Own Particle Behavior
+
+Combine changes to speed, lifetime, size, color, and movement into a
+particle system that feels like your own effect - falling snow, rising
+embers, scattering dust - rather than the original trail.
+
+---
+
+OPTIONAL STRETCH - Steer Particles with noise()
+
+In Session 06, Noise Grid used noise() to control size smoothly across
+a grid. Try the same idea here: in update(), use noise() (with x, y,
+or frameCount as inputs) to calculate speedX and speedY instead of
+random(-2, 2), so particles drift smoothly instead of jittering
+randomly.
+
+---
+
+Nothing in this sketch predicts how many particles will exist -
+class Particle only knows how to describe and manage one, and the
+array only knows how to hold as many of those as currently exist.
+Everything you see is what happens when a simple loop is allowed to
+create, update, and remove them one at a time, every single frame.

@@ -1,0 +1,52 @@
+Programming for Visual Artists
+Session 07 - Array of Dots
+
+You have been given an empty array and a loop. Your task is to see
+how clicking grows the array, and how the loop always draws whatever
+the array currently holds - no matter how many dots that is.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Click a few times.
+Notice: click once, one dot; click again, two dots; and so on.
+
+---
+
+STEP 2 - Find the Array
+
+Find dots near the top of the file. const dots = []; starts it empty.
+An array is one variable that can hold many values - here, many click
+positions, one per click.
+
+---
+
+STEP 3 - Find Where a Dot Gets Added
+
+Find mousePressed(). Every click adds one more position to the array
+with push(). Nothing is drawn here - mousePressed() only changes what
+the array holds.
+
+---
+
+STEP 4 - Find the Loop That Draws Them All
+
+Find the for loop in draw(). dots.length is however many dots exist
+right now, so the loop always visits every single one, whether that
+is zero, one, or fifty.
+
+---
+
+STEP 5 - Change What Each Dot Looks Like
+
+Change the circle's size or color inside the loop and click again.
+Notice the change applies to every dot, old and new, because they are
+all drawn by the same one line of code.
+
+---
+
+An array does not know in advance how many things it will hold - it
+starts empty and grows one item at a time, exactly as fast as you add
+to it. Particles Follow, next, uses this same idea to hold many
+particles instead of many dots.

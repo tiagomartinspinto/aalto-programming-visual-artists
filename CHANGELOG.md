@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-08 (session 7)
+
+- Added 2026-2027 Session 7 covering arrays, objects and particle systems (Array of Dots, Particles Follow), completing the currently-planned core curriculum (Sessions 1-7). Each sketch has a Processing comparison, an independent worksheet, and a debugging moment.
+- Discovered and fixed a real safety risk in Particles Follow: emission is now gated behind a named `MAX_PARTICLES` cap, since the worksheet's own suggested edits (slower fade, faster emission) could otherwise grow the particle count without bound. Verified with a stress test and a new pinned regression.
+- Caught and corrected a misleading debugging-moment description during testing before committing (see PROJECT_STATUS.md).
+
 ## 2026-09-08 (sessions 5-6)
 
 - Added 2026-2027 Sessions 5 and 6 covering functions/parameters/generative systems (Shapes Function) and noise/recursion (Noise Grid, Recursive Tree), each with a Processing comparison, an independent worksheet, and a debugging moment. Recursion is now first-class runnable material with an explicitly taught base case. 2026-2027 now has 6 sessions and 11 web sketches; Session 7 and the optional media session remain unbuilt.
