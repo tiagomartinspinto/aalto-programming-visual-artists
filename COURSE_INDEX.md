@@ -8,6 +8,7 @@ Generated from the repository structure and year data files. Run `npm run build:
 | --- | ---: | ---: | ---: |
 | [2024-2025](years/2024-2025/) | 8 | 9 | 8 |
 | [2025-2026](years/2025-2026/) | 6 | 10 | 6 |
+| [2026-2027](years/2026-2027/) | 0 | 0 | 0 |
 
 ## 2024-2025
 
@@ -83,3 +84,7 @@ Generated from the repository structure and year data files. Run `npm run build:
 - [session-04 slides](years/2025-2026/slides/session-04.pdf)
 - [session-05 slides](years/2025-2026/slides/session-05.pdf)
 - [session-06 slides](years/2025-2026/slides/session-06.pdf)
+
+## 2026-2027
+
+- [Year landing page](years/2026-2027/)

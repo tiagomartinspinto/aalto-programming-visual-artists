@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
@@ -66,7 +66,7 @@ for (const year of years) {
 for (const year of years) {
   const yearPath = path.join(yearsRoot, year);
   lines.push("", `## ${year}`, "", `- [Year landing page](years/${year}/)`);
-  if (existsDirectory(path.join(yearPath, "web"))) {
+  if (existsSync(path.join(yearPath, "web", "lab.html"))) {
     lines.push(`- [Sketch Lab](years/${year}/web/lab.html)`);
   }
 

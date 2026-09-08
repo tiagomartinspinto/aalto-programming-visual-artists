@@ -15,6 +15,7 @@ Live site: [tiagomartinspinto.github.io/aalto-programming-visual-artists](https:
 
 ## School Years
 
+- [2026-2027](years/2026-2027/) - current academic year; course material is being prepared
 - [2025-2026](years/2025-2026/)
 - [2024-2025](years/2024-2025/)
 - [Generated course index](COURSE_INDEX.md)
@@ -30,6 +31,7 @@ Each school year should stay self-contained:
 
 ```text
 years/
+  2026-2027/
   2025-2026/
   2024-2025/
 ```
