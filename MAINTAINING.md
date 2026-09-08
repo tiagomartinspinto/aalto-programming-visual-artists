@@ -2,6 +2,8 @@
 
 This repository is a static course archive. Keep each academic year self-contained, and prefer small, readable updates over broad redesigns during a live course.
 
+Before a change to curriculum design, site structure, or teaching material, read [PROJECT_DIRECTION.md](PROJECT_DIRECTION.md) for the project's stable identity and decision principles. This file covers day-to-day maintenance mechanics only.
+
 ## Regular Update Flow
 
 1. Add or edit the course material.

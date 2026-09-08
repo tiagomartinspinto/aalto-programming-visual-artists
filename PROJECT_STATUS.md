@@ -1,5 +1,7 @@
 # Project Status
 
+For the project's stable identity and decision principles, see [PROJECT_DIRECTION.md](PROJECT_DIRECTION.md). This file tracks current state and remaining work only.
+
 ## Completed This Pass (Teaching Diagrams)
 
 Added the small set of lightweight teaching visuals the full-course review
