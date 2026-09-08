@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" role="img" aria-labelledby="nl-title nl-desc">
+  <title id="nl-title">The outer loop picks a row, the inner loop walks its columns</title>
+  <desc id="nl-desc">A grid of 4 columns and 3 rows. Row 1 is outlined with a thick solid border and column 2 is outlined with a thick dashed border. The single cell where row 1 and column 2 meet is filled solid black. col becomes x; row becomes y.</desc>
+  <style>
+    text { font-family: "Courier New", Consolas, "Liberation Mono", monospace; fill: #000000; }
+  </style>
+
+  <!-- column labels -->
+  <text x="118" y="45" font-size="14">col 0</text>
+  <text x="188" y="45" font-size="14">col 1</text>
+  <text x="258" y="45" font-size="14">col 2</text>
+  <text x="328" y="45" font-size="14">col 3</text>
+
+  <!-- row labels -->
+  <text x="30" y="95" font-size="14">row 0</text>
+  <text x="30" y="155" font-size="14">row 1</text>
+  <text x="30" y="215" font-size="14">row 2</text>
+
+  <!-- base grid: 4 cols x 3 rows, cell 70x60, origin (100,60) -->
+  <g fill="#ffffff" stroke="#000000" stroke-width="2">
+    <rect x="100" y="60" width="70" height="60"/>
+    <rect x="170" y="60" width="70" height="60"/>
+    <rect x="240" y="60" width="70" height="60"/>
+    <rect x="310" y="60" width="70" height="60"/>
+    <rect x="100" y="120" width="70" height="60"/>
+    <rect x="170" y="120" width="70" height="60"/>
+    <rect x="240" y="120" width="70" height="60"/>
+    <rect x="310" y="120" width="70" height="60"/>
+    <rect x="100" y="180" width="70" height="60"/>
+    <rect x="170" y="180" width="70" height="60"/>
+    <rect x="240" y="180" width="70" height="60"/>
+    <rect x="310" y="180" width="70" height="60"/>
+  </g>
+
+  <!-- highlighted row 1: thick solid outline around the whole row band -->
+  <rect x="100" y="120" width="280" height="60" fill="none" stroke="#000000" stroke-width="4.5"/>
+
+  <!-- highlighted col 2: thick dashed outline around the whole column band -->
+  <rect x="240" y="60" width="70" height="180" fill="none" stroke="#000000" stroke-width="4.5" stroke-dasharray="9,6"/>
+
+  <!-- intersection cell: row 1, col 2 -->
+  <rect x="240" y="120" width="70" height="60" fill="#000000"/>
+  <text x="252" y="156" font-size="14" font-weight="bold" style="fill: #ffffff;">here</text>
+
+  <!-- legend -->
+  <line x1="100" y1="255" x2="140" y2="255" stroke="#000000" stroke-width="4.5"/>
+  <text x="148" y="260" font-size="14">row 1 (solid) &#8594; becomes y</text>
+  <line x1="100" y1="280" x2="140" y2="280" stroke="#000000" stroke-width="4.5" stroke-dasharray="9,6"/>
+  <text x="148" y="285" font-size="14">col 2 (dashed) &#8594; becomes x</text>
+</svg>

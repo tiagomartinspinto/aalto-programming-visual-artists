@@ -25,6 +25,20 @@
         <h1>Noise and Recursion</h1>
         <p>Last session, you called your own functions to build a system. Now we will see two different ways one small rule can create a lot of visual complexity: noise() extends the grid and mapping ideas from Sessions 02 and 04 into smooth, related variation instead of random jumps, while recursion asks what happens when a function calls itself.</p>
       </section>
+      <section aria-label="Random versus noise diagram">
+        <h2>random() Versus noise()</h2>
+        <figure class="teaching-card">
+          <img src="../../assets/teaching/random-vs-noise.svg" alt="Two rows of bars. In the random() row, neighboring bars jump to unrelated heights. In the noise() row, neighboring bars stay close in height, rising and falling smoothly.">
+          <figcaption>random() jumps to a new value each time. noise() moves to a value close to the last one.</figcaption>
+        </figure>
+      </section>
+      <section aria-label="Recursion base case diagram">
+        <h2>branch() Calls Itself, Then Stops</h2>
+        <figure class="teaching-card">
+          <img src="../../assets/teaching/recursion-base-case.svg" alt="A branching tree: branch(100) splits into two branch(70), each splits into two branch(49), and each of those makes one final branch(34) marked with an open circle where it stops instead of splitting again, because it has become too small to continue.">
+          <figcaption>Each call makes the branch shorter. Once it is too short, the base case stops the calls.</figcaption>
+        </figure>
+      </section>
       <section class="rhythm-grid" aria-label="Class rhythm">
         <article class="rhythm-card">
           <span>Before class</span>

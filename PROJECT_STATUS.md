@@ -1,6 +1,27 @@
 # Project Status
 
-## Completed This Pass (Projects and Assessment)
+## Completed This Pass (Teaching Diagrams)
+
+Added the small set of lightweight teaching visuals the full-course review
+recommended for concepts that are hard to communicate through code and prose
+alone. Not slide decks - seven local, inline-referenced SVG cards living
+directly on the session pages where each concept is introduced.
+
+- **Session 01 - `canvas-coordinates.svg`**: the canvas coordinate system (origin top-left, x right, y down, one example point). Placed right after the hero, before the rhythm cards.
+- **Session 02 - `map-ranges.svg`**: mouseX's 0-width range becoming a 0-255 output range, with a marker at the same relative position in both. Uses the actual range from the Mouse Shapes worksheet.
+- **Session 04 - `nested-loop-grid.svg`**: a 4x3 grid with one row (solid outline) and one column (dashed outline) highlighted and their intersection filled - directly supports the session's own row/column debugging exercise.
+- **Session 05 - `function-parameters.svg`**: two calls to the actual `drawAbstractShape(x, y, size)` function with different values, connected to two differently-sized result circles.
+- **Session 06 - two cards**, kept as visibly separate concepts: `random-vs-noise.svg` (two bar-height sequences contrasting independent jumps with smooth neighboring change) and `recursion-base-case.svg` (a small branching tree labeled branch(100) -> branch(70) -> branch(49) -> branch(34): stop, with a summary line). The recursion card is the highest-priority visual in the pass.
+- **Session 07 - `particle-lifecycle.svg`**: one card combining `class Particle` (the recipe) with the `particles[]` array (many objects), plus a five-step create -> push -> update -> display -> remove flow.
+- **Session 03 - no visual added**, matching the review's explicit finding that none was needed; nothing added for symmetry.
+- All seven are local SVG files under `years/2026-2027/assets/teaching/`, referenced via `<img>` inside a small new `.teaching-card` pattern (`figure` + `figcaption`) added to the existing shared `sessions/session.css` - no new stylesheet, no build dependency, no external host. Each SVG is monochrome (matching the site's actual rendered ASCII-terminal skin, which overrides color site-wide) with `role="img"`, a `<title>`, and a `<desc>`, plus a descriptive `alt` on the `<img>`; no information is carried by color alone anywhere.
+- **A real accessibility bug was found and fixed during implementation**: a white text label inside the nested-loop-grid diagram was invisible because a global `text { fill: #000000; }` stylesheet rule inside the SVG overrode its `fill="#ffffff"` presentation attribute. Fixed with an inline `style` override; caught only by actually rendering and screenshotting the file, not by reading the markup.
+- Two smaller layout bugs were found and fixed the same way: the Session 01 card's rotated y-axis label originally overlapped its own `(0, 0)` text and contained a `↓` glyph that rotated into a misleading sideways arrow; the recursion card's four `branch(49)` labels originally collided into unreadable overlapping text. Both fixed and re-verified by rendering.
+- No curriculum content changed: no session titles, order, worksheets, sketches, Lab behavior, or project/assessment text were touched.
+
+## Previously Completed
+
+- **Projects and assessment**: Project Brief 1, Project Brief 2, Final Project, and a qualitative assessment framework, all on `years/2026-2027/projects/index.html`; Session 06's bridge wording fixed to name noise's lineage (Session 02's `map()`, Session 04's grids) alongside recursion's.
 
 A full-course review of Sessions 1-7 concluded "core course ready with minor
 revisions," with the main remaining gap being that 2026-2027 had no project
@@ -26,27 +47,24 @@ review's two small approved wording fixes.
 
 ## Files Changed (This Pass)
 
-- `years/2026-2027/projects/index.html` (new - Project Brief 1, Project Brief 2, Final Project, assessment framework, project-studio note)
-- `years/2026-2027/index.html` (`#assignments` now links to the new page; lede text updated to reflect the current, real state)
-- `years/2026-2027/course-data.js` (3 `searchExtras` entries for the new project sections)
-- `years/2026-2027/sessions/session-06/index.html` (hero bridge now names noise's lineage as well as recursion's)
-- `years/2026-2027/README.md` (new "Projects" section, `projects/` added to Repository Structure)
+- `years/2026-2027/assets/teaching/{canvas-coordinates,map-ranges,nested-loop-grid,function-parameters,random-vs-noise,recursion-base-case,particle-lifecycle}.svg` (new)
+- `years/2026-2027/sessions/session.css` (new `.teaching-card` figure/figcaption pattern, reusing existing `--line`/`--panel`/`--muted` variables)
+- `years/2026-2027/sessions/session-01/index.html`, `session-02/index.html`, `session-04/index.html`, `session-05/index.html`, `session-06/index.html`, `session-07/index.html` (one new section each with a `figure.teaching-card`, placed after the hero and before the rhythm cards; session-06 gets two)
 - `PROJECT_STATUS.md`, `CHANGELOG.md`
 
 ## Checks Run (This Pass)
 
-- `npm run check` - passed (build:index, check:site, check:assets) on the first run.
+- `npm run check` - passed (build:index, check:site, check:assets) on the first run, including the image `alt`-text and local-link checks against all seven new files.
 - `npm run smoke:browser` - passed, no changes needed.
 - Fresh-install verification: `rm -rf node_modules && npm ci` followed by `npm run check` and `npm run smoke:browser` - both passed.
-- `node --check` on `years/2026-2027/course-data.js` - passed. `git diff --check` - clean.
-- Manual Playwright verification: the projects page renders with all 7 sections and no horizontal overflow at 390px; all 4 project card links on the year page resolve (200); site search returns the new project entries; the Session 06 hero renders the corrected bridge text.
-- Manual read-through of all new project/assessment text as a student, confirming it answers: what am I making, how big should it be, which techniques do I need, can I adapt examples, do I need advanced code, what matters in assessment, what must I be able to explain.
+- `git diff --check` - clean. No JavaScript/Node tooling files were changed this pass, so `node --check` had nothing new to run.
+- Manual rendering of all seven SVGs in isolation caught and fixed three real bugs (see above) before they were ever wired into a session page.
+- Manual desktop and 390px-mobile review of all six updated session pages: every teaching-card image loads, every `alt` text is present and descriptive, no horizontal overflow at 390px, and the recursion card - the highest-priority visual - was confirmed legible at native mobile pixel size via a cropped screenshot, not just "present."
 - `git diff -- years/2024-2025` and `git diff -- years/2025-2026` - both empty.
 
 ## Remaining Tasks
 
-- **Teacher/institution decisions** (deliberately not invented in this pass): actual scheduling/deadlines for each project stage, the submission mechanism, and any grading-scale or weighting beyond the qualitative framework already published.
-- Optional lightweight teaching diagrams (not slide decks): canvas coordinates (01), `map()` range (02), row/column nested-loop (04), parameter-flow (05), random-vs-noise + recursion base-case (06), particle lifecycle (07).
+- **Teacher/institution decisions** (deliberately not invented in any pass): actual scheduling/deadlines for each project stage, the submission mechanism, and any grading-scale or weighting beyond the published qualitative framework.
 - Optional future workshop, not core curriculum: Image (and optionally local video) as data - still-image pixel manipulation (`pixels[]`, invert, grayscale, threshold) on a small bundled file; explicitly no camera, no microphone, no FFT.
 - Separately review/merge the Dependabot Playwright update (1.60.0 -> 1.62.1).
 - Author decision on licensing for the original teaching material.

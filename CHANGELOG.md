@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-08 (teaching diagrams)
+
+- Added seven lightweight, local SVG teaching cards to Sessions 01, 02, 04, 05, 06 (two), and 07, placed on the session pages next to the concepts they support: canvas coordinates, map() ranges, nested-loop rows/columns, function parameter flow, random() vs noise(), the recursion base case, and the particle/array lifecycle. No slide decks, no Session 08, no curriculum changes. Session 03 intentionally has no new visual.
+- Fixed an accessibility bug found while rendering the diagrams: a stylesheet rule inside one SVG was overriding a white text label's fill, making it invisible.
+
 ## 2026-09-08 (projects and assessment)
 
 - Added 2026-2027 project briefs, Final Project guidance, and a qualitative assessment framework, closing the last gap from the full-course review. Complexity is explicitly not the goal; noise() and recursion are explicitly optional in Project Brief 2. No grading percentages, deadlines, or submission mechanism were invented - none exist in the repository, so scheduling and grading weight remain teacher/institution decisions.

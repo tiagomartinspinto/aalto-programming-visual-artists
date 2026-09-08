@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 340" role="img" aria-labelledby="fp-title fp-desc">
+  <title id="fp-title">One function, different parameter values</title>
+  <desc id="fp-desc">The function drawAbstractShape takes x, y, and size. Two separate calls send different values into those three parameters: one call uses x 100, y 150, size 40; the other uses x 260, y 120, size 90. Each call produces its own circle, smaller for the smaller size value.</desc>
+  <style>
+    text { font-family: "Courier New", Consolas, "Liberation Mono", monospace; fill: #000000; }
+  </style>
+
+  <!-- the recipe -->
+  <text x="240" y="28" font-size="17" font-weight="bold" text-anchor="middle">drawAbstractShape(x, y, size)</text>
+  <text x="240" y="48" font-size="13" text-anchor="middle">one recipe, three parameters</text>
+
+  <!-- arrows down to each call -->
+  <line x1="200" y1="58" x2="130" y2="88" stroke="#000000" stroke-width="2.5"/>
+  <polygon points="130,88 142,86 137,75" fill="#000000"/>
+  <line x1="280" y1="58" x2="350" y2="88" stroke="#000000" stroke-width="2.5"/>
+  <polygon points="350,88 338,86 343,75" fill="#000000"/>
+
+  <!-- call 1 card -->
+  <rect x="50" y="90" width="160" height="110" fill="#ffffff" stroke="#000000" stroke-width="2.5"/>
+  <text x="130" y="112" font-size="14" font-weight="bold" text-anchor="middle">call 1</text>
+  <text x="70" y="136" font-size="14">x = 100</text>
+  <text x="70" y="158" font-size="14">y = 150</text>
+  <text x="70" y="180" font-size="14">size = 40</text>
+
+  <!-- call 2 card -->
+  <rect x="270" y="90" width="160" height="110" fill="#ffffff" stroke="#000000" stroke-width="2.5"/>
+  <text x="350" y="112" font-size="14" font-weight="bold" text-anchor="middle">call 2</text>
+  <text x="290" y="136" font-size="14">x = 260</text>
+  <text x="290" y="158" font-size="14">y = 120</text>
+  <text x="290" y="180" font-size="14">size = 90</text>
+
+  <!-- results -->
+  <line x1="130" y1="200" x2="130" y2="230" stroke="#000000" stroke-width="2" stroke-dasharray="5,5"/>
+  <line x1="350" y1="200" x2="350" y2="230" stroke="#000000" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="240" y="248" font-size="13" text-anchor="middle">related, but different results</text>
+  <circle cx="130" cy="290" r="16" fill="#ffffff" stroke="#000000" stroke-width="2.5"/>
+  <circle cx="350" cy="290" r="36" fill="#ffffff" stroke="#000000" stroke-width="2.5"/>
+</svg>

@@ -224,3 +224,26 @@ article p {
   font-weight: 760;
   text-decoration: none;
 }
+
+.teaching-card {
+  margin: 0 0 24px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.teaching-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.teaching-card figcaption {
+  max-width: 640px;
+  margin: 12px auto 0;
+  color: var(--muted);
+  font-size: 14px;
+}
