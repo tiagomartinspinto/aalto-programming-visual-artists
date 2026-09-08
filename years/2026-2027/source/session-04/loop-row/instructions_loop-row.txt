@@ -1,0 +1,60 @@
+Programming for Visual Artists
+Session 04 - Loop Row
+
+Before this sketch existed, drawing eight evenly spaced circles meant
+writing circle() eight times by hand:
+
+  circle(25, 50, 30);
+  circle(75, 50, 30);
+  circle(125, 50, 30);
+  circle(175, 50, 30);
+  circle(225, 50, 30);
+  circle(275, 50, 30);
+  circle(325, 50, 30);
+  circle(375, 50, 30);
+
+A for loop writes that once and lets a counting variable (i) do the
+repeating. Your task is to find that loop and see what each part of it
+controls.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Count the circles.
+
+---
+
+STEP 2 - Find the Loop
+
+Find the for loop in draw(). i starts at 0, the loop keeps running
+while i < 8, and i increases by 1 after every repeat - that is why
+there are exactly 8 circles.
+
+---
+
+STEP 3 - Find What Changes Each Time
+
+x is calculated from i (25 + i * 50), so every repeat draws its circle
+50 pixels further right than the last one. The circle's size (30) does
+not depend on i, so every circle is the same size.
+
+---
+
+STEP 4 - Change the Loop
+
+Change 8 to a different number and run it. Then change 50 (the
+spacing) to make the circles closer together or further apart.
+
+---
+
+STEP 5 - Make Your Own Row
+
+Change the shape, the color, or make the spacing depend on i as well
+(for example, i * i) to make the row uneven on purpose.
+
+---
+
+One line of drawing code, one counting variable, and a loop that
+reruns that line as many times as you tell it to - that is the whole
+idea. Hover Grid, next, uses two of these loops at once.

@@ -358,6 +358,20 @@ async function expectHomeMetadata(page) {
   }
 }
 
+// Every sketch listed for a year should load and run cleanly in the Lab, not
+// only the default one - this is what actually gets exercised when a session
+// page links "Edit <sketch> in the Lab" for a sketch that isn't the default.
+async function checkAllLabSketchesLoad(page, labYear) {
+  for (const sketch of labYear.data.sketches || []) {
+    await page.goto(site(`${labYear.urlPath}web/lab.html?sketch=${sketch.id}`), { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("canvas", { timeout: 10000 });
+    const statusText = (await page.locator("#status").textContent()) || "";
+    if (statusText.includes("Error") || !statusText.includes("running")) {
+      throw new Error(`${labYear.year} Lab sketch "${sketch.id}" did not load and run cleanly: "${statusText}"`);
+    }
+  }
+}
+
 // --- Historical regression test ----------------------------------------------
 // Pinned to one known year/sketch instead of the generic discovery above,
 // because it checks one exact interaction (a mouse click recoloring the
@@ -413,6 +427,36 @@ async function checkMouseShapesReassignmentRegression(browser) {
     const status = (await page.locator("#status").textContent()) || "";
     if (status.includes("constant variable") || !status.includes("Your sketch is running")) {
       throw new Error(`${year} mouse-shapes Lab regression: reassigning circleSize inside draw() did not run cleanly: "${status}"`);
+    }
+  } finally {
+    await context.close();
+  }
+}
+
+// Pinned to 2026-2027's Bouncing Ball Color: guards against the same mistake
+// class as the historical Mouse Shapes bug (a mutable value the worksheet
+// reassigns declared `const` instead of `let`). speedX/speedY/ballColor are
+// exactly the values Session 03's worksheet and debugging moment ask
+// students to reassign inside draw()/mousePressed(). Skips quietly if this
+// fixture is ever removed in a future year.
+async function checkBouncingBallStateRegression(browser) {
+  const year = "2026-2027";
+  const yearPath = path.join(root, "years", year);
+  if (!existsSync(path.join(yearPath, "web", "lab.html")) || !existsSync(path.join(yearPath, "web", "bouncing-ball", "sketch.js"))) {
+    return;
+  }
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  try {
+    await page.goto(site(`/years/${year}/web/lab.html?sketch=bouncing-ball`), { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("canvas", { timeout: 10000 });
+    const code = page.locator("#code");
+    await code.fill(`${await code.inputValue()}\nfunction mousePressed() { speedX *= -1; speedY *= -1; ballColor = color(0, 200, 0); }`);
+    await page.locator("#run-button").click();
+    await page.waitForTimeout(500);
+    const status = (await page.locator("#status").textContent()) || "";
+    if (status.includes("constant variable") || !status.includes("Your sketch is running")) {
+      throw new Error(`${year} bouncing-ball Lab regression: reassigning speedX/speedY/ballColor did not run cleanly: "${status}"`);
     }
   } finally {
     await context.close();
@@ -532,12 +576,19 @@ try {
     if (!(await page.locator('nav a[href="#lab"]').isVisible())) {
       throw new Error(`${labYear.year} mobile year navigation is not visible`);
     }
+
+    // Every sketch listed for this year should load cleanly in the Lab, not
+    // only the default one - this is what actually gets exercised when a
+    // session page links "Edit <sketch> in the Lab" for a non-default sketch.
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await checkAllLabSketchesLoad(page, labYear);
   } else {
     console.warn("No published year has a Lab page yet; skipping the Lab regression check.");
   }
 
   await checkBouncingBallLabRegression(browser);
   await checkMouseShapesReassignmentRegression(browser);
+  await checkBouncingBallStateRegression(browser);
 
   console.log("Browser smoke test passed.");
 } finally {

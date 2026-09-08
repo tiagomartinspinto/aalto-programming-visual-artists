@@ -1,0 +1,109 @@
+Programming for Visual Artists
+Session 03 - Bouncing Ball Color
+
+You have been given a ball that moves on its own and changes color
+when it hits an edge. Your task is to find the values that make that
+happen, then change them.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Describe what you see in
+one sentence: what moves, and what changes when it hits an edge?
+
+---
+
+STEP 2 - Find the Position
+
+Find x and y near the top of the file. These are the same idea as x
+and y in drawFace() back in Session 01, and circleX/circleY in
+Session 02 - except now nothing outside the sketch sets them. The
+sketch sets them itself, every frame.
+
+---
+
+STEP 3 - Find the Speed
+
+Find speedX and speedY. Every frame, draw() adds them to x and y:
+
+  x += speedX;
+  y += speedY;
+
+This is why the ball moves at a steady rate instead of jumping to a
+new position.
+
+---
+
+STEP 4 - Change the Speed
+
+Change speedX or speedY to a bigger, smaller, or negative number and
+run it again. Notice what a negative number does to the starting
+direction.
+
+---
+
+STEP 5 - Find the Edge Condition
+
+Find the two if statements. Each one asks a boolean question: has x
+(or y) gone past an edge? Read the condition out loud in plain words
+before reading the code inside it.
+
+---
+
+STEP 6 - Change What Happens at the Edge
+
+speedX *= -1 reverses direction by flipping the sign of the speed.
+Try changing one edge's reaction - for example, reverse both speeds at
+once when only x hits an edge - and see what that does to the path.
+
+---
+
+STEP 7 - Watch the State Change
+
+ballColor is not set once - it is reassigned inside both if
+statements. That is what makes color a piece of state: a value that
+persists across frames and only changes when a condition says so.
+Change what ballColor becomes on collision.
+
+---
+
+STEP 8 - Make One Rule Your Own
+
+Change the radius, the starting position, both speeds, or the edge
+reaction together, until the result feels like your own moving
+composition rather than the original ball.
+
+---
+
+STEP 9 - Debugging Moment: Wrong Variable, Right Syntax
+
+Go to the y-edge if statement and change
+
+  speedY *= -1;
+
+to
+
+  speedX *= -1;
+
+(reversing the wrong variable). Run it.
+
+The sketch will not crash and no error will appear - but the ball's
+behavior will look wrong: instead of bouncing back down, it will keep
+drifting past the top or bottom edge and off the canvas for good,
+while its horizontal direction starts flickering back and forth
+instead. This is an important kind of bug: not every mistake produces
+an error message. Ask yourself:
+
+  What did I expect to happen?
+  What actually happened?
+  Which condition is responsible for that behavior?
+
+Find the mismatched variable and change it back.
+
+---
+
+The ball never "decides" to bounce - position changes every frame, one
+of two conditions eventually becomes true, and that condition is the
+only thing that changes the speed and the color. Everything else in
+draw() just keeps running the same way it always does.

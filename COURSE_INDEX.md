@@ -8,7 +8,7 @@ Generated from the repository structure and year data files. Run `npm run build:
 | --- | ---: | ---: | ---: |
 | [2024-2025](years/2024-2025/) | 8 | 9 | 8 |
 | [2025-2026](years/2025-2026/) | 6 | 10 | 6 |
-| [2026-2027](years/2026-2027/) | 2 | 3 | 0 |
+| [2026-2027](years/2026-2027/) | 4 | 8 | 0 |
 
 ## 2024-2025
 
@@ -94,9 +94,16 @@ Generated from the repository structure and year data files. Run `npm run build:
 
 - [Drawing, Coordinates and First Functions](years/2026-2027/sessions/session-01/)
 - [Variables, Mouse Input and Mapping](years/2026-2027/sessions/session-02/)
+- [Conditionals, Movement and State](years/2026-2027/sessions/session-03/)
+- [Loops, Grids and Waves](years/2026-2027/sessions/session-04/)
 
 ### Web Sketches
 
+- [Bouncing Ball Color](years/2026-2027/web/bouncing-ball/)
 - [Color House](years/2026-2027/web/color-house/)
 - [Face Exercise](years/2026-2027/web/face-exercise/)
+- [Hover Color](years/2026-2027/web/hover-color/)
+- [Hover Grid](years/2026-2027/web/hover-grid/)
+- [Loop Row](years/2026-2027/web/loop-row/)
 - [Mouse Shapes](years/2026-2027/web/mouse-shapes/)
+- [Simple Waves](years/2026-2027/web/simple-waves/)

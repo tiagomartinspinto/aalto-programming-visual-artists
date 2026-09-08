@@ -1,63 +1,76 @@
 # Project Status
 
-## Completed This Pass (Correction Pass, Post-Review)
+## Completed This Pass (Sessions 03-04 Build)
+
+Implemented Sessions 3 and 4, reusing the corrected Sessions 1-2 teaching
+pattern (one concept, an opener only where it isolates something cleanly,
+one canonical p5.js-first sketch with a Processing comparison, one
+independent worksheet per sketch, an explicit bridge from the previous
+session, one organically-caused debugging moment, and Lab exposure).
+
+- **Session 03: Conditionals, Movement and State.** Two sketches: **Hover Color** (new, small opener - one circle, one `isHovering` boolean, if/else changes its color) and **Bouncing Ball Color** (adapted from 2025-2026's `bouncing-ball`, the stronger of the two historical versions since it already teaches `map()`-free edge detection and state cleanly). Renamed `xSpeed`/`ySpeed` to `speedX`/`speedY` for consistency with `x`/`y`. All mutable state (`x`, `y`, `speedX`, `speedY`, `ballColor`) is `let`; `radius` stays `const` since nothing ever reassigns it at runtime. The debugging moment is intentionally **behavioral, not an error**: swapping which speed variable a collision reverses does not crash the sketch or print anything - the ball drifts off the top/bottom edge instead of bouncing, which is the point (confirmed by screenshot during manual testing). Historical Hover Grid was deliberately **not** used as the Session 03 opener because it already depends on nested loops, which are not taught until Session 04.
+- **Session 04: Loops, Grids and Waves.** Three sketches: **Loop Row** (new, tiny opener - a single `for` loop drawing 8 circles; the worksheet shows the 8-line manual-repetition version in text first, mirroring Session 01's drawFace() before/after technique), **Hover Grid** (adapted from 2025-2026, loop counters renamed `row`/`col` instead of reused `x`/`y` for clarity, and given the same hover-red/normal-blue palette as Hover Color to make the Session 3 -> 4 conditional connection visible), and **Simple Waves** (adapted from 2025-2026, near-unchanged - already a clean single-loop `sin()` example). Perlin noise and rotation (2025-2026's Generative Grid) were deliberately **not** brought in; they are reserved for Session 06. The debugging moment mirrors Session 03's pattern explicitly: making the grid's x/y both read the same loop variable collapses the grid into a diagonal line, with no error message (confirmed by screenshot).
+- Added an explicit **Session 2 -> 3** bridge (Session 03 hero: "Last session, the mouse changed values for you. Now the sketch changes its own position every frame...") and **Session 3 -> 4** bridge (Session 04 hero: "Last session, one ball changed frame after frame. Now one block of code creates many shapes...").
+- Wrote one independent instruction sheet per sketch (5 new `instructions_*.txt` files), each with visible-feedback steps and a personal-variation step; no worksheet was padded to match another's length.
+- All five new sketches were added to `years/2026-2027/course-data.js` and are editable in the existing Lab; `assets/lab.js` was not modified.
+- No slide decks were added (none exist for 2026-2027 yet, by design). Session 03 and 04 pages honestly state slides have not been added yet.
+- Sessions 5-7 and the optional media session were **not** built. No historical folder was copied wholesale; every adapted file was reviewed and, where needed, renamed/reworded for clarity (see the diff and the correction rationale above).
+- `currentSession` in `course-data.js` now points to `session-04` (the newest session), matching the convention already used by 2024-2025 and 2025-2026 (both point at their final session, not their first).
+- `years/2024-2025/` and `years/2025-2026/` are unchanged (verified with `git diff`).
+
+## Previously Completed (Correction Pass, Post-Review of Sessions 1-2)
 
 A teaching-quality review of the implemented Sessions 1-2 found them "ready
-with minor revisions." This pass applies those fixes so Sessions 1-2 are
-solid enough to serve as the template for Sessions 3-7:
+with minor revisions." That pass fixed:
 
-- **Fixed a MUST-FIX bug**: `years/2026-2027/web/mouse-shapes/sketch.js` declared `circleSize`/`squareSize` with `const`, while the worksheet explicitly instructs students to reassign them (`circleSize = map(mouseX, 0, width, 10, 120);`, and later a click-driven random reassignment). That threw `Assignment to constant variable.` on the very next animation frame, silently freezing the canvas. Both are now `let`. The Processing `.pde` was already correct (`float circleSize = 50;`) and needed no change.
-- **Added a Color House instruction sheet** (`years/2026-2027/source/session-02/color-house/instructions_color-house.txt`, new - previously the only Session 2 sketch without one). It opens with the plain-language variable definition ("a variable is a named place where you keep a value so you can read or change it later"), walks through `mousePressed()`, and asks for one deliberate visual choice. Not linked from HTML/course-data, matching the existing convention (Face Exercise's and Mouse Shapes' instruction files aren't linked from anywhere either).
-- **Added an explicit Session 1 -> Session 2 bridge**: the Session 02 hero paragraph now opens with "In Session 01 you gave drawFace() its x and y yourself. Here, mouseX and mouseY supply changing position values for you, every frame..." One short echo was added in the Mouse Shapes worksheet (Step 3) rather than repeating it everywhere.
-- **Reworded the Face Exercise debugging moment**: it no longer promises a specific error string ("not enough arguments"); it now says wording varies and gives a short, concrete checklist (notice what changed -> compare the call against the definition -> check every parameter has a value -> fix and rerun).
-- **Reduced Mouse Shapes' first-impression overload without touching the sketch**: a new worksheet Step 2 ("Focus on One Thing First") asks students to isolate the background/mouseX relationship before the existing steps expand to the circle, square, and the rest of the `map()` calls. All later steps were renumbered (now 9 steps instead of 8); no code changed.
-- **Fixed the Lab's silent runtime-error gap** (`assets/lab.js`): errors thrown inside `draw()`, `setup()`, `preload()`, `mousePressed()`, or `keyPressed()` are now caught at the point each callback is installed on the p5 instance (a `wrapCallback` wrapper), not only during the synchronous construction that the previous `try/catch` covered. The status bar now reports `Error in draw(): <message>` (etc.) instead of falsely continuing to say "Your sketch is running." after the canvas has frozen. The first error in any callback stops the sketch (`p.noLoop()`) and silences further callbacks until Run or Reset, so one bug does not spam a new status line every frame or click. Students still write plain `function draw() {}` - no new API.
-- **Removed dead code**: the `window.addEventListener("message", ...)` handler in `assets/lab.js` for `sketch-running`/`sketch-error` messages was vestigial (grepped the repo - nothing posts those messages; the Lab mounts p5 directly, not via iframe/postMessage) and was removed as part of the same change.
-- **Added regression coverage** in `tools/smoke-test.mjs`: (1) a generic check, run against whichever published year has a Lab, that appends a deliberately throwing `draw()`, confirms the status reports the error and does not flip back to "running" on a later frame, then confirms Reset recovers; (2) a pinned historical regression (`checkMouseShapesReassignmentRegression`, modeled on the existing `checkBouncingBallLabRegression` pattern) confirming 2026-2027's Mouse Shapes Lab can now run a version where `circleSize` is reassigned inside `draw()` - it skips quietly if that fixture is ever removed in a future year.
-- Sessions 1-2 remain the only implemented 2026-2027 sessions; no Session 3+ material, no slide decks, and no changes to `years/2024-2025/` or `years/2025-2026/` were made in this pass.
+- A MUST-FIX bug in Mouse Shapes (`const` variables the worksheet instructed students to reassign; now `let`).
+- A missing Color House instruction sheet with an explicit variable definition.
+- An explicit Session 1 -> 2 bridge.
+- Debugging-moment wording that no longer promises one exact error string.
+- A Mouse Shapes worksheet step reducing first-run overload.
+- The Lab's silent runtime-error gap (`assets/lab.js` now reports errors thrown inside `draw()`/`setup()`/etc. instead of freezing silently), plus removal of a dead `postMessage` handler.
+- Regression coverage for both the runtime-error fix and the historical Mouse Shapes reassignment bug.
 
 ## Previously Completed (Initial Sessions 1-2 Build)
 
-- Implemented **Session 01 (Drawing, Coordinates and First Functions)**: one canonical Processing/p5.js "Face Exercise" that merges the strongest ideas from 2025-2026's `face_exercise` and 2024-2025's `smile-face` - a single `drawFace(x, y, diameter)` function called three times at different sizes/positions, with proportional (not fixed-pixel) eye offsets so it scales correctly at every size.
-- Implemented **Session 02 (Variables, Mouse Input and Mapping)**: "Color House" (simplified click-to-recolor opener, adapted from 2024-2025's `color-house`/`extra_coloronmousepress`) and "Mouse Shapes" (adapted from 2025-2026's implementation, the stronger of the two historical versions since it already teaches `map()` explicitly).
-- Wrote one progressive `instructions_*.txt` exercise sheet per session, following the established 2025-2026 pattern, each ending in a short debugging/error-reading moment.
-- Created the 2026-2027 Sketch Lab (`web/lab.html`), now justified since browser sketches exist; it exposes all three new sketches (Face Exercise, Color House, Mouse Shapes) via the shared `assets/lab.js` runtime, unmodified.
-- Did **not** build "Follow the Mouse" (left optional, per instructions, to keep this pilot's maintenance surface minimal) and did **not** restore the console-only operators/variable-types exercises (no visual output; explicitly excluded).
-- No slide decks were added: no editable slide-source workflow exists in the repository, only final PDFs, and the 2026-2027 session boundaries do not match the historical ones closely enough to reuse them honestly. Session pages show an honest "not added yet" note instead of a dead PDF link.
-- Fixed two related, previously-latent generic bugs, both only reachable once a session legitimately has no slide deck (never true before this pass): `tools/check-site.mjs` and `tools/smoke-test.mjs` both unconditionally required every session page to have a working PDF panel/link. Both now check whether `slides/session-XX.pdf` actually exists for that session before requiring the panel/link.
-- Updated root `index.html`/`README.md` and regenerated `COURSE_INDEX.md` to show 2026-2027's real counts (2 sessions, 3 sketches, 0 slide decks, Lab present).
-- `years/2024-2025/` and `years/2025-2026/` are unchanged (verified with `git diff`).
+- Implemented **Session 01 (Drawing, Coordinates and First Functions)**: one canonical Processing/p5.js "Face Exercise" - a single `drawFace(x, y, diameter)` function called three times at different sizes/positions, with proportional (not fixed-pixel) eye offsets.
+- Implemented **Session 02 (Variables, Mouse Input and Mapping)**: "Color House" (click-to-recolor opener) and "Mouse Shapes" (mouseX/mouseY driving position and color through `map()`).
+- Created the 2026-2027 Sketch Lab (`web/lab.html`), exposing course sketches via the shared `assets/lab.js` runtime.
+- No slide decks were added: no editable slide-source workflow exists in the repository, and the 2026-2027 session boundaries do not match the historical ones closely enough to reuse them honestly.
 
 ## Files Changed (This Pass)
 
-- `assets/lab.js` (runtime-error reporting at the callback boundary; removed dead `postMessage` handler)
-- `tools/smoke-test.mjs` (Lab runtime-error regression + pinned Mouse Shapes reassignment regression)
-- `years/2026-2027/web/mouse-shapes/sketch.js` (`const` -> `let` for `circleSize`/`squareSize`)
-- `years/2026-2027/source/session-01/face-exercise/instructions_face-exercise.txt` (debugging wording)
-- `years/2026-2027/source/session-02/mouse-shapes/instructions_mouse-shapes.txt` (first-focus step, Session 1 bridge echo, renumbered steps)
-- `years/2026-2027/source/session-02/color-house/instructions_color-house.txt` (new)
-- `years/2026-2027/sessions/session-02/index.html` (Session 1 -> 2 bridge in the hero)
+- `years/2026-2027/course-data.js` (added `session-03`, `session-04`, 5 new sketches; `currentSession` now points to `session-04`)
+- `years/2026-2027/sessions/session-03/index.html`, `session-04/index.html` (new)
+- `years/2026-2027/source/session-03/hover-color/{hover-color.pde, instructions_hover-color.txt}` (new)
+- `years/2026-2027/source/session-03/bouncing-ball/{bouncing-ball.pde, instructions_bouncing-ball.txt}` (new)
+- `years/2026-2027/source/session-04/loop-row/{loop-row.pde, instructions_loop-row.txt}` (new)
+- `years/2026-2027/source/session-04/hover-grid/{hover-grid.pde, instructions_hover-grid.txt}` (new)
+- `years/2026-2027/source/session-04/simple-waves/{simple-waves.pde, instructions_simple-waves.txt}` (new)
+- `years/2026-2027/web/{hover-color,bouncing-ball,loop-row,hover-grid,simple-waves}/{index.html,sketch.js}` (new)
+- `years/2026-2027/README.md` (course map + web sketch list)
+- `index.html`, `README.md`, `COURSE_INDEX.md` (2026-2027 now shows 4 sessions)
+- `tools/smoke-test.mjs` (generic "every Lab sketch for the newest year loads cleanly" check; pinned Bouncing Ball state-reassignment regression)
 - `PROJECT_STATUS.md`, `CHANGELOG.md`
 
 ## Checks Run (This Pass)
 
 - `npm run check` - passed (build:index, check:site, check:assets).
-- `npm run smoke:browser` - passed, including the two new Lab regression checks.
-- Fresh-install verification: `rm -rf node_modules && npm ci` (0 vulnerabilities) followed by `npm run check` and `npm run smoke:browser` - both passed.
-- `node --check` on `assets/lab.js`, `tools/smoke-test.mjs`, and `years/2026-2027/web/mouse-shapes/sketch.js` - passed. `git diff --check` - clean.
-- Manual Playwright verification of the literal worksheet edits: Mouse Shapes Step 4 (`circleSize = map(...)`) and Step 8 (click-driven `circleSize` reassignment) both run cleanly with no page errors; a deliberately thrown `draw()` error is reported as `Error in draw(): ...`, stays reported (no false "running" flip, no spam), and Reset recovers; the Face Exercise missing-argument scenario still reports a clear error; Color House unaffected.
+- `npm run smoke:browser` - passed, including the two new checks (all-Lab-sketches-load, and the pinned Bouncing Ball `let` regression).
+- Fresh-install verification: `rm -rf node_modules && npm ci` followed by `npm run check` and `npm run smoke:browser` - both passed.
+- `node --check` on `tools/smoke-test.mjs` - passed. `git diff --check` - clean.
+- Manual Playwright verification of literal worksheet edits for all 5 new sketches (speed/color/loop-count/spacing/amplitude changes) - all ran cleanly with no page errors.
+- Manual verification of both debugging moments by screenshot: Bouncing Ball's wrong-variable swap makes the ball drift off the canvas edge instead of bouncing (no error); Hover Grid's row/col mix-up collapses the grid into a visible diagonal line (no error).
 - `git diff -- years/2024-2025` and `git diff -- years/2025-2026` - both empty.
 
 ## Remaining Tasks
 
-- Session 03: Conditionals, Movement and State
-- Session 04: Loops, Grids and Waves
 - Session 05: Functions, Parameters and Generative Systems
 - Session 06: Noise and Recursion
 - Session 07: Arrays, Objects and Particles
 - Optional Session 08: Image and Video as Material
 - Assessment/final-project prompts for 2026-2027, once enough sessions exist to write them against
-- Optional lightweight teaching diagrams (not slide decks): a canvas coordinate diagram for Session 01, a `map()` range diagram for Session 02 - identified as the only visual material either session might benefit from
+- Optional lightweight teaching diagrams (not slide decks): canvas coordinate diagram (Session 01), `map()` range diagram (Session 02), position/velocity + condition-flow diagram (Session 03), manual-repetition-vs-loop + row/column + sine amplitude/phase diagrams (Session 04)
 - Separately review/merge the Dependabot Playwright update (1.60.0 -> 1.62.1)
 - Author decision on licensing for the original teaching material
 

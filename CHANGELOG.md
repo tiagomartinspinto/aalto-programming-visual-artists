@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-08 (sessions 3-4)
+
+- Added 2026-2027 Sessions 3 and 4 covering conditionals/movement/state (Hover Color, Bouncing Ball Color) and loops/grids/waves (Loop Row, Hover Grid, Simple Waves), each with a Processing comparison, an independent worksheet, and a debugging moment. 2026-2027 now has 4 sessions and 8 web sketches; Sessions 5-7 and noise/recursion remain unbuilt.
+- Extended the browser smoke suite with a generic check that every Lab sketch for the newest year loads and runs cleanly, and a pinned regression guarding Bouncing Ball's mutable state variables against the same const/let mistake class fixed in Mouse Shapes.
+
 ## 2026-09-08 (correction pass)
 
 - Fixed a Mouse Shapes bug where `circleSize`/`squareSize` were declared `const` in the p5.js sketch while the worksheet instructed students to reassign them; both are now `let`.

@@ -1,0 +1,98 @@
+Programming for Visual Artists
+Session 04 - Hover Grid
+
+You have been given a grid built from two loops, one inside the
+other. Your task is to see how each loop controls a different
+direction, then find the condition that makes each cell react on its
+own.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Move the mouse over the
+grid. Count the rows and the columns.
+
+---
+
+STEP 2 - Find the Repeated Drawing Command
+
+Every cell is drawn by one rect() call inside the innermost loop - the
+same idea as Loop Row, just repeated in two directions instead of
+one.
+
+---
+
+STEP 3 - Compare the Two Loops
+
+Find the outer loop (row) and the inner loop (col). For every single
+value of row, the inner loop runs all the way through every value of
+col before row moves on. That is why the grid fills column by column
+within each row, not one cell at a time at random.
+
+---
+
+STEP 4 - Change the Grid Size
+
+Change cols and rows independently - for example cols = 4 and
+rows = 12 - and run it. Notice that each loop only controls its own
+direction.
+
+---
+
+STEP 5 - Change the Spacing
+
+cellW and cellH are calculated once in setup() by dividing the canvas
+size by cols/rows. Change the canvas size in createCanvas() and watch
+the cells resize automatically.
+
+---
+
+STEP 6 - Find the Hover Condition
+
+Find isHovering. It is the same kind of boolean question as in Hover
+Color, just repeated once per cell: is the mouse inside this
+particular cell's rectangle?
+
+---
+
+STEP 7 - Change the Reaction
+
+Change one or both of the two colors, or change the condition itself -
+for example, make a cell react when the mouse is merely close to it
+instead of inside it.
+
+---
+
+STEP 8 - Make Your Own Composition
+
+Change the shape (try ellipse() instead of rect()), the color rule, or
+the grid size until the result is recognizably your own.
+
+---
+
+STEP 9 - Debugging Moment: Rows Become a Diagonal Line
+
+Inside the loops, change one of the two lines that compute x and y so
+that both use the same loop variable, for example:
+
+  const x = row * cellW;
+  const y = row * cellH;
+
+Run it. The sketch will not crash and no error will appear - but the
+grid collapses into a single diagonal line of cells instead of a full
+grid. This is the same kind of bug as Session 03's wrong-variable
+mistake: the code runs, but the behavior is visibly wrong. Ask
+yourself:
+
+  Which variable is supposed to control columns?
+  Which variable is supposed to control rows?
+  Which one did the x calculation actually use?
+
+Change it back and confirm the full grid returns.
+
+---
+
+Two loops do not "know" about rows and columns - row and col are just
+two counting variables, and it is the code that decides which one
+becomes a horizontal position and which one becomes a vertical one.

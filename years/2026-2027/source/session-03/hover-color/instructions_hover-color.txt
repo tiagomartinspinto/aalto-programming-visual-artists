@@ -1,0 +1,52 @@
+Programming for Visual Artists
+Session 03 - Hover Color
+
+You have been given one shape and one question: is the mouse inside
+it? Your task is to find that question in the code and see how it
+controls what you see.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Move the mouse over the
+circle and away from it. Watch the color change.
+
+---
+
+STEP 2 - Find the Question
+
+Find isHovering in draw(). It is a boolean: a value that is only ever
+true or false. dist(mouseX, mouseY, width / 2, height / 2) measures
+how far the mouse is from the circle's center; isHovering is true only
+when that distance is less than 80.
+
+---
+
+STEP 3 - Find the Rule
+
+Find the if statement that reads isHovering. When it is true, the
+circle is drawn in one color; when it is false (the else branch), it
+is drawn in the other color. Nothing else in the sketch changes.
+
+---
+
+STEP 4 - Change the Rule
+
+Change the distance (80) to a smaller or larger number and see how
+much of the canvas now counts as "hovering." Then change one of the
+two colors.
+
+---
+
+STEP 5 - Make It Yours
+
+Replace the circle with a shape of your own, or change what "hovering"
+means - for example, only the left half of the canvas.
+
+---
+
+If statements do not need motion or memory to be useful: this sketch
+asks one question, every frame, and answers it two different ways.
+Bouncing Ball Color, next, asks a very similar question about a ball
+that is also moving.

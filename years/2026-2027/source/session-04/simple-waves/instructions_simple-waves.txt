@@ -1,0 +1,57 @@
+Programming for Visual Artists
+Session 04 - Simple Waves
+
+You have been given a row of circles - the same single-loop idea as
+Loop Row - except this time sin() decides each circle's height
+instead of a fixed number.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Watch the row move.
+
+---
+
+STEP 2 - Find the sin() Value
+
+Find the line that calculates y. sin() always returns a value that
+moves smoothly back and forth between -1 and 1 - you do not need the
+trigonometry behind it to use it. Multiplying that value by
+waveAmplitude turns it into a height in pixels.
+
+---
+
+STEP 3 - Change the Amplitude
+
+Change waveAmplitude to a smaller or larger number and run it. Notice
+that the rhythm of the motion does not change, only how far it
+reaches.
+
+---
+
+STEP 4 - Change the Spacing
+
+Change waveSpacing to make the wave tighter (more visible bumps) or
+looser (one long, slow curve).
+
+---
+
+STEP 5 - Change the Movement Speed
+
+Change waveSpeed. This value is added to time every frame - a smaller
+number makes the wave drift, a larger one makes it swim.
+
+---
+
+STEP 6 - Build a Visual Variation
+
+Change the shape, the color, the spacing between circles (the 20 in
+the loop), or combine two sin() calls for a more complex rhythm.
+
+---
+
+sin() is doing the same job here that map() did with the mouse in
+Session 02: turning one changing number into another, smoothly, frame
+after frame. Here the changing number is time instead of mouse
+position.
