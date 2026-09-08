@@ -1,6 +1,9 @@
 {
   "name": "aalto-programming-visual-artists",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build:index": "node tools/build-course-index.mjs",
     "new:year": "node tools/new-year.mjs",

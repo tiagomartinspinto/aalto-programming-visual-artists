@@ -158,6 +158,7 @@ writeFileSync(path.join(target, "index.html"), `<!doctype html>
         <div class="slides-reader" aria-label="Slide deck selector">
           <div class="slide-controls">
             <p class="slide-list-label">No slide decks have been added yet.</p>
+            <ul class="slide-fallback-list" aria-label="Slide deck PDF links"></ul>
           </div>
           <div class="slide-viewer">
             <div class="slide-viewer-bar">

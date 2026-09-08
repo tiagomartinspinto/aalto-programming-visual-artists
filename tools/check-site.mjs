@@ -1,26 +1,20 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
-import vm from "node:vm";
+import { loadCourseData as loadCourseDataRaw } from "./course-data-loader.mjs";
 
 const root = process.cwd();
 const errors = [];
 const typoPattern = /isntru|animted|nexted|function_parame_ex|particlesperlinoise|seperate/i;
 const privateFilePattern = /(^|\/)(\.env|\.env\..+|.*\.bak|.*\.backup|.*\.tmp|.*~|private-notes?|grades?|\.DS_Store)$/i;
 const privateContentPattern = /(\b[A-Z0-9_]*(?:API_KEY|AUTH_TOKEN|ACCESS_TOKEN|SECRET)\b|ghp_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,}|\/Users\/ptiagomp\/Desktop|\/var\/folders\/)/;
-const removedWorkTracePattern = new RegExp(`\\b(${
-  [
-    "stu" + "dent",
-    "stu" + "dents",
-    "stu" + "dy",
-    "stu" + "dies",
-    "case-" + "stu" + "dy",
-    "case-" + "stu" + "dies",
-    "Open" + "Processing",
-    "source\\." + "txt",
-    "mir" + "ror",
-    "gal" + "lery",
-  ].join("|")
-})\\b`, "i");
+// Legacy artifacts that should not return, scoped narrowly to exact
+// filenames or external references rather than ordinary teaching vocabulary.
+// Earlier versions of this check banned bare words like "student" or
+// "gallery", which also rejects normal course prose - replaced with specific
+// traces instead. Add new entries here only for concrete removed material
+// (an exact filename, an exact removed external link), not general topics.
+const removedLegacyFilename = /(^|\/)source\.txt$/i;
+const removedExternalHostPattern = /openprocessing\.org/i;
 const emailPattern = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
 const cspPattern = /<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/i;
 const privacyNote = "Code edits run locally in your browser and are not uploaded.";
@@ -315,33 +309,81 @@ function loadCourseData(filePath) {
   if (!source.includes("Source of truth")) {
     errors.push(`${relative(filePath)} is missing the source-of-truth maintenance comment`);
   }
-  const context = { window: {} };
-  vm.createContext(context);
-  vm.runInContext(source, context, { filename: filePath });
-  return context.window.COURSE_DATA;
+  return loadCourseDataRaw(filePath);
 }
 
+// Validates years/YYYY-YYYY/course-data.js as structured course data: every
+// id is present and unique, every cross-reference (currentSession.id,
+// lab.defaultSketch, sketch.related) resolves to something real, required
+// titles are non-empty, and every referenced path exists. A freshly
+// generated empty year (no sessions/sketches/slides, currentSession: null)
+// has nothing to check here and stays valid.
 function checkCourseData(filePath) {
   const data = loadCourseData(filePath);
   const yearPath = path.dirname(filePath);
+  const yearName = path.basename(yearPath);
+  const rel = relative(filePath);
   if (!data) {
-    errors.push(`${relative(filePath)} does not define window.COURSE_DATA`);
+    errors.push(`${rel} does not define window.COURSE_DATA`);
     return;
   }
 
+  if (data.year !== yearName) {
+    errors.push(`${rel} has data.year "${data.year}" that does not match its folder name "${yearName}"`);
+  }
+
+  const sessionIds = new Set();
   for (const session of data.sessions || []) {
+    if (!session.id) {
+      errors.push(`${rel} has a session with a missing id`);
+    } else if (sessionIds.has(session.id)) {
+      errors.push(`${rel} has a duplicate session id: ${session.id}`);
+    } else {
+      sessionIds.add(session.id);
+    }
+    if (!session.title) errors.push(`${rel} session ${session.id || "(no id)"} is missing a title`);
     checkLocalTarget(filePath, session.href);
     for (const link of session.links || []) checkLocalTarget(filePath, link.pdf || link.href);
   }
 
+  const sketchIds = new Set();
   for (const sketch of data.sketches || []) {
+    if (!sketch.id) {
+      errors.push(`${rel} has a sketch with a missing id`);
+    } else if (sketchIds.has(sketch.id)) {
+      errors.push(`${rel} has a duplicate sketch id: ${sketch.id}`);
+    } else {
+      sketchIds.add(sketch.id);
+    }
+    if (!sketch.title) errors.push(`${rel} sketch ${sketch.id || "(no id)"} is missing a title`);
     checkLocalTarget(filePath, sketch.page);
     checkLocalTarget(filePath, sketch.source);
     const sketchPath = path.join(yearPath, "web", sketch.id, "sketch.js");
-    if (!existsSync(sketchPath)) errors.push(`${relative(filePath)} lists missing sketch source: web/${sketch.id}/sketch.js`);
+    if (!existsSync(sketchPath)) errors.push(`${rel} lists missing sketch source: web/${sketch.id}/sketch.js`);
   }
 
-  for (const slide of data.slides || []) checkLocalTarget(filePath, slide.pdf);
+  for (const sketch of data.sketches || []) {
+    for (const relatedId of sketch.related || []) {
+      if (!sketchIds.has(relatedId)) {
+        errors.push(`${rel} sketch "${sketch.id}" has a related id that does not resolve to a sketch: ${relatedId}`);
+      }
+    }
+  }
+
+  for (const slide of data.slides || []) {
+    if (!slide.title) errors.push(`${rel} has a slide deck with a missing title`);
+    if (!slide.pdf) errors.push(`${rel} has a slide deck with a missing pdf reference`);
+    else checkLocalTarget(filePath, slide.pdf);
+  }
+
+  if (data.currentSession?.id && !sessionIds.has(data.currentSession.id)) {
+    errors.push(`${rel} currentSession.id does not resolve to an existing session: ${data.currentSession.id}`);
+  }
+
+  if (data.lab?.defaultSketch && !sketchIds.has(data.lab.defaultSketch)) {
+    errors.push(`${rel} lab.defaultSketch does not resolve to an existing sketch: ${data.lab.defaultSketch}`);
+  }
+
   for (const item of data.searchExtras || []) checkLocalTarget(filePath, item.href);
 }
 
@@ -357,13 +399,42 @@ function countFiles(directory, extension) {
 
 function checkCounts() {
   const rootIndex = readFileSync(path.join(root, "index.html"), "utf8");
+  const readme = readFileSync(path.join(root, "README.md"), "utf8");
+  const courseIndexPath = path.join(root, "COURSE_INDEX.md");
+  const courseIndex = existsSync(courseIndexPath) ? readFileSync(courseIndexPath, "utf8") : "";
+  if (!courseIndex) errors.push("COURSE_INDEX.md is missing; run npm run build:index");
+
   for (const year of countDirectories(path.join(root, "years")) ? readdirSync(path.join(root, "years")) : []) {
     const yearPath = path.join(root, "years", year);
     if (!isDirectory(yearPath)) continue;
     const sessions = countDirectories(path.join(yearPath, "sessions"), (name) => name.startsWith("session-"));
     const pdfs = countFiles(path.join(yearPath, "slides"), ".pdf");
-    for (const expected of [`${sessions} sessions`]) {
-      if (!rootIndex.includes(expected)) errors.push(`index.html is missing or has stale count label "${expected}" for ${year}`);
+
+    // Root index.html must link to this exact year, and that link's own
+    // list item (not the document as a whole) must show this year's real
+    // session count. A global substring search for e.g. "6 sessions" would
+    // pass even if a *different* year happened to hold that count.
+    const yearHref = `years/${year}/`;
+    const homeEntry = rootIndex.match(new RegExp(`<li>\\s*<a\\b[^>]*\\bhref=["']${yearHref}["'][^>]*>[\\s\\S]*?</a>\\s*</li>`, "i"));
+    if (!homeEntry) {
+      errors.push(`index.html is missing a course-directory link to ${yearHref}`);
+    } else if (!homeEntry[0].includes(`${sessions} sessions`)) {
+      errors.push(`index.html link for ${year} does not show its own session count "${sessions} sessions"`);
+    }
+
+    // README.md must reference this exact year, not just some year.
+    if (!readme.includes(yearHref)) {
+      errors.push(`README.md is missing a reference to ${yearHref}`);
+    }
+
+    // The generated course index must list this exact year.
+    if (courseIndex && (!courseIndex.includes(`(${yearHref})`) || !courseIndex.includes(`## ${year}`))) {
+      errors.push(`COURSE_INDEX.md is missing an entry for ${year}`);
+    }
+
+    if (!existsSync(path.join(yearPath, "index.html"))) {
+      errors.push(`years/${year}/index.html is missing`);
+      continue;
     }
     const yearIndex = readFileSync(path.join(yearPath, "index.html"), "utf8");
     if (!yearIndex.includes("Last updated:")) errors.push(`years/${year}/index.html is missing a last-updated marker`);
@@ -423,12 +494,15 @@ for (const filePath of walk(root)) {
   if (typoPattern.test(rel) && rel !== "years/2025-2026/FILENAME_NOTES.md") {
     errors.push(`${rel} still uses a typo-prone filename`);
   }
+  if (removedLegacyFilename.test(rel)) {
+    errors.push(`${rel} uses the removed legacy "source.txt" filename convention`);
+  }
   if (/\.(?:html|js|css|md|txt|pde|rb|json|yml|yaml)$/i.test(filePath)) {
     const content = readFileSync(filePath, "utf8");
     if (privateContentPattern.test(content)) errors.push(`${rel} contains a private token pattern or local machine path`);
     const traceScanExempt = rel === "PROJECT_STATUS.md" || /(?:^|\/)vendor\/p5\.min\.js$/.test(rel);
-    if (!traceScanExempt && removedWorkTracePattern.test(content)) {
-      errors.push(`${rel} contains a removed coursework trace term`);
+    if (!traceScanExempt && removedExternalHostPattern.test(content)) {
+      errors.push(`${rel} still references the removed OpenProcessing hosting link`);
     }
   }
   if (filePath.endsWith(".html")) checkHtml(filePath);
