@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-08 (sessions 5-6)
+
+- Added 2026-2027 Sessions 5 and 6 covering functions/parameters/generative systems (Shapes Function) and noise/recursion (Noise Grid, Recursive Tree), each with a Processing comparison, an independent worksheet, and a debugging moment. Recursion is now first-class runnable material with an explicitly taught base case. 2026-2027 now has 6 sessions and 11 web sketches; Session 7 and the optional media session remain unbuilt.
+- Discovered and fixed a real safety risk in Recursive Tree: an aggressive branch-length multiplier could make the length-based base case take an intractable number of calls to trigger. Added a call-count safety net independent of the length check, verified with a stress test and a new pinned regression.
+
 ## 2026-09-08 (sessions 3-4)
 
 - Added 2026-2027 Sessions 3 and 4 covering conditionals/movement/state (Hover Color, Bouncing Ball Color) and loops/grids/waves (Loop Row, Hover Grid, Simple Waves), each with a Processing comparison, an independent worksheet, and a debugging moment. 2026-2027 now has 4 sessions and 8 web sketches; Sessions 5-7 and noise/recursion remain unbuilt.

@@ -19,6 +19,8 @@ This year is in progress. Sessions are added deliberately, one at a time.
 | 02 | Variables, mouse input, and map() | [Color house](source/session-02/color-house/color-house.pde), [mouse shapes](source/session-02/mouse-shapes/mouse-shapes.pde) |
 | 03 | Conditionals, movement, and state | [Hover color](source/session-03/hover-color/hover-color.pde), [bouncing ball color](source/session-03/bouncing-ball/bouncing-ball.pde) |
 | 04 | Loops, grids, and waves | [Loop row](source/session-04/loop-row/loop-row.pde), [hover grid](source/session-04/hover-grid/hover-grid.pde), [simple waves](source/session-04/simple-waves/simple-waves.pde) |
+| 05 | Functions, parameters, and generative systems | [Shapes function](source/session-05/shapes-function/shapes-function.pde) |
+| 06 | Noise and recursion | [Noise grid](source/session-06/noise-grid/noise-grid.pde), [recursive tree](source/session-06/recursive-tree/recursive-tree.pde) |
 
 ## Web Sketches
 
@@ -30,6 +32,9 @@ This year is in progress. Sessions are added deliberately, one at a time.
 - [Loop row](web/loop-row/)
 - [Hover grid](web/hover-grid/)
 - [Simple waves](web/simple-waves/)
+- [Shapes function](web/shapes-function/)
+- [Noise grid](web/noise-grid/)
+- [Recursive tree](web/recursive-tree/)
 
 ## Repository Structure
 

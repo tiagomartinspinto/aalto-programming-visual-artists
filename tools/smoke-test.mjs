@@ -8,6 +8,18 @@ const explicitSiteUrl = process.env.PVA_SITE_URL;
 const expectedYearSections = ["current-session", "web-sketches", "lab", "sessions", "slides", "assignments", "comparison"];
 const viewports = [{ width: 1280, height: 800 }, { width: 820, height: 900 }, { width: 390, height: 844 }];
 
+async function withTimeout(promise, ms, message) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(message)), ms);
+  });
+  try {
+    return await Promise.race([promise, timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function loadPlaywright() {
   try {
     return await import("playwright");
@@ -463,6 +475,43 @@ async function checkBouncingBallStateRegression(browser) {
   }
 }
 
+// Pinned to 2026-2027's Recursive Tree: guards against unbounded recursive
+// blowup if a student pushes the branch-length multiplier close to 1 (the
+// worksheet suggests a safe 0.5-0.85 range, but nothing stops a curious
+// edit past it). Because base-case termination only depends on length
+// shrinking below a threshold, a multiplier near 1 can take dozens of
+// levels to terminate by length alone, and with two recursive calls per
+// level that is an intractable number of draw calls - branch() must also
+// carry a call-count safety net independent of the length check, or this
+// hangs the tab. The check itself is timeout-guarded so a real regression
+// fails clearly instead of hanging the test suite. Skips quietly if this
+// fixture is ever removed in a future year.
+async function checkRecursiveTreeSafetyNet(browser) {
+  const year = "2026-2027";
+  const yearPath = path.join(root, "years", year);
+  if (!existsSync(path.join(yearPath, "web", "lab.html")) || !existsSync(path.join(yearPath, "web", "recursive-tree", "sketch.js"))) {
+    return;
+  }
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  try {
+    await page.goto(site(`/years/${year}/web/lab.html?sketch=recursive-tree`), { waitUntil: "domcontentloaded" });
+    await page.waitForSelector("canvas", { timeout: 10000 });
+    const code = page.locator("#code");
+    const aggressive = (await code.inputValue()).replace(/length \* 0\.67/g, "length * 0.97");
+    await code.fill(aggressive);
+    await page.locator("#run-button").click();
+    await page.waitForTimeout(1500);
+    await withTimeout(
+      page.evaluate(() => document.title.length >= 0),
+      5000,
+      `${year} recursive-tree Lab regression: page became unresponsive with an aggressive branch multiplier (safety net missing?)`
+    );
+  } finally {
+    await context.close();
+  }
+}
+
 const { chromium } = await loadPlaywright();
 const browser = await chromium.launch();
 const page = await browser.newPage();
@@ -589,6 +638,7 @@ try {
   await checkBouncingBallLabRegression(browser);
   await checkMouseShapesReassignmentRegression(browser);
   await checkBouncingBallStateRegression(browser);
+  await checkRecursiveTreeSafetyNet(browser);
 
   console.log("Browser smoke test passed.");
 } finally {

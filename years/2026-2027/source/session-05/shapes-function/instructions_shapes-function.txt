@@ -1,0 +1,97 @@
+Programming for Visual Artists
+Session 05 - Shapes Function
+
+You have been given a system that draws twenty random shapes using
+one reusable function. Your task is to find that function, understand
+what its parameters control, and then design your own version of the
+rule.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser) and click it several
+times. Each click regenerates the composition.
+
+---
+
+STEP 2 - Find the Custom Function
+
+Find drawAbstractShape(x, y, size) below draw(). Read it as "the
+recipe for one shape" - the same idea as drawFace() in Session 01,
+just with a random shape type and color chosen inside it instead of a
+face.
+
+---
+
+STEP 3 - Find Where It Is Called
+
+Find the for loop in draw() that calls drawAbstractShape() twenty
+times. Every call gets three different values: random(width),
+random(height), and random(30, 100) for x, y, and size.
+
+---
+
+STEP 4 - Change a Parameter Range
+
+Change random(30, 100) to a narrower or wider range and click to
+regenerate. Notice that every one of the twenty shapes is affected,
+because they all come from the same call.
+
+---
+
+STEP 5 - Change How Many Calls Happen
+
+Change 20 in the for loop to a smaller or much larger number.
+
+---
+
+STEP 6 - Change What the Function Decides
+
+Inside drawAbstractShape(), fill(random(255), random(255),
+random(255), 150) decides the color every time the function runs.
+Change the 150 (opacity) to a fixed lower or higher number and compare.
+
+---
+
+STEP 7 - Add a Fourth Shape Type
+
+shapeType picks between 0, 1, and 2 (ellipse, rectangle, triangle).
+Add a fourth option - for example a line or a small cluster of
+points - and update int(random(3)) to int(random(4)).
+
+---
+
+STEP 8 - Debugging Moment: A Parameter Nothing Uses
+
+Add a fourth parameter called opacity to drawAbstractShape(x, y, size,
+opacity), and pass a random value for it from every call in draw(),
+for example random(50, 255). Run it and click a few times.
+
+Nothing changes - every shape still looks the same as before, even
+though you are now passing a different opacity to every single call.
+Ask yourself:
+
+  What did I expect to happen?
+  What actually happened?
+  Does the function body actually use the opacity parameter anywhere?
+
+Look inside drawAbstractShape(): the fill() line still uses the fixed
+number 150 for transparency. A parameter only changes the result if
+the function's body actually reads it. Fix it by replacing 150 with
+opacity.
+
+---
+
+STEP 9 - Design Your Own System
+
+Change the shape vocabulary, the color palette, the size range, and
+the number of calls together until clicking regenerates something that
+feels like your own generative rule, not the original example.
+
+---
+
+The twenty calls never draw twenty different pictures by accident -
+they all run the exact same function, and every difference you see
+comes from the parameters each call happens to receive. That is what
+makes a function a reusable system instead of one fixed drawing.

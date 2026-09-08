@@ -1,78 +1,63 @@
 # Project Status
 
-## Completed This Pass (Sessions 03-04 Build)
+## Completed This Pass (Sessions 05-06 Build)
 
-Implemented Sessions 3 and 4, reusing the corrected Sessions 1-2 teaching
-pattern (one concept, an opener only where it isolates something cleanly,
-one canonical p5.js-first sketch with a Processing comparison, one
-independent worksheet per sketch, an explicit bridge from the previous
-session, one organically-caused debugging moment, and Lab exposure).
+Implemented Sessions 5 and 6, reusing the established teaching pattern (one
+concept, an opener only where it isolates something cleanly, one canonical
+p5.js-first sketch with a Processing comparison, one independent worksheet
+per sketch, an explicit bridge from the previous session, one
+organically-caused debugging moment, and Lab exposure).
 
-- **Session 03: Conditionals, Movement and State.** Two sketches: **Hover Color** (new, small opener - one circle, one `isHovering` boolean, if/else changes its color) and **Bouncing Ball Color** (adapted from 2025-2026's `bouncing-ball`, the stronger of the two historical versions since it already teaches `map()`-free edge detection and state cleanly). Renamed `xSpeed`/`ySpeed` to `speedX`/`speedY` for consistency with `x`/`y`. All mutable state (`x`, `y`, `speedX`, `speedY`, `ballColor`) is `let`; `radius` stays `const` since nothing ever reassigns it at runtime. The debugging moment is intentionally **behavioral, not an error**: swapping which speed variable a collision reverses does not crash the sketch or print anything - the ball drifts off the top/bottom edge instead of bouncing, which is the point (confirmed by screenshot during manual testing). Historical Hover Grid was deliberately **not** used as the Session 03 opener because it already depends on nested loops, which are not taught until Session 04.
-- **Session 04: Loops, Grids and Waves.** Three sketches: **Loop Row** (new, tiny opener - a single `for` loop drawing 8 circles; the worksheet shows the 8-line manual-repetition version in text first, mirroring Session 01's drawFace() before/after technique), **Hover Grid** (adapted from 2025-2026, loop counters renamed `row`/`col` instead of reused `x`/`y` for clarity, and given the same hover-red/normal-blue palette as Hover Color to make the Session 3 -> 4 conditional connection visible), and **Simple Waves** (adapted from 2025-2026, near-unchanged - already a clean single-loop `sin()` example). Perlin noise and rotation (2025-2026's Generative Grid) were deliberately **not** brought in; they are reserved for Session 06. The debugging moment mirrors Session 03's pattern explicitly: making the grid's x/y both read the same loop variable collapses the grid into a diagonal line, with no error message (confirmed by screenshot).
-- Added an explicit **Session 2 -> 3** bridge (Session 03 hero: "Last session, the mouse changed values for you. Now the sketch changes its own position every frame...") and **Session 3 -> 4** bridge (Session 04 hero: "Last session, one ball changed frame after frame. Now one block of code creates many shapes...").
-- Wrote one independent instruction sheet per sketch (5 new `instructions_*.txt` files), each with visible-feedback steps and a personal-variation step; no worksheet was padded to match another's length.
-- All five new sketches were added to `years/2026-2027/course-data.js` and are editable in the existing Lab; `assets/lab.js` was not modified.
-- No slide decks were added (none exist for 2026-2027 yet, by design). Session 03 and 04 pages honestly state slides have not been added yet.
-- Sessions 5-7 and the optional media session were **not** built. No historical folder was copied wholesale; every adapted file was reviewed and, where needed, renamed/reworded for clarity (see the diff and the correction rationale above).
-- `currentSession` in `course-data.js` now points to `session-04` (the newest session), matching the convention already used by 2024-2025 and 2025-2026 (both point at their final session, not their first).
+- **Session 05: Functions, Parameters and Generative Systems.** One required sketch: **Shapes Function** (adapted from 2025-2026, already the strongest historical candidate - a `drawAbstractShape(x, y, size)` function called 20 times with random parameters, click-to-regenerate via `mousePressed()` -> `redraw()`). No opener was added: Session 01's `drawFace()` already taught "call the same function several times with different values," so a new small opener would only reteach that; Shapes Function's loop + randomness is the genuinely new material. The debugging moment is a fresh lesson distinct from Session 01's: a fourth parameter (`opacity`) is added and passed a different value from every call, but the function body never reads it, so nothing visibly changes - "I changed a parameter but nothing happened" (confirmed by manual testing). Added `mousePressed()` -> `redraw()` to the Processing `.pde` too, since the historical Processing version lacked the interaction the p5.js version already had. **Spiral Spins** (polar coordinates, HSB color, easing, keyboard toggle) was deliberately **not** added - it is meaningfully more advanced than Shapes Function and not part of Session 5's core concept; it remains in the historical archive as a candidate for a future optional/stretch addition.
+- **Session 06: Noise and Recursion.** Two required sketches, kept as two distinct concepts rather than blended: **Noise Grid** (new - reuses Session 04's grid layout and Session 02's `map()`, but replaces `random()` with `noise()` to control only circle size, so the smooth-vs-abrupt contrast is directly visible) and **Recursive Tree** (adapted from 2024-2025's animated version, simplified from two mirrored trees to one, since a single `branch(length, angle)` call is enough to teach the base case without doubling the push/pop scaffolding a beginner has to parse first). The base case (`length > 8`) is explicitly named and traced in the worksheet ("big branch -> smaller branches -> ... -> stop"), not left as implementation detail. **A real technical risk was found and fixed during implementation**: with the worksheet's own suggested multiplier range (0.5-0.85) the tree is always safe, but a curious edit toward 1 (e.g. 0.97) makes the length-based base case take dozens of levels to trigger, and with two recursive calls per level that is an intractable number of draw calls - both `branch()` implementations now also carry a call-count safety net (`branchCalls`/`MAX_BRANCH_CALLS`, reset every frame) independent of the length check, verified by deliberately testing a 0.97 multiplier in the Lab (stays responsive) and covered by a new pinned regression test. The debugging moment is safe and behavioral (both recursive calls rotating the same way, so the tree curls into one arm instead of forking) - the base case itself is never removed as an exercise. Perlin Noise Letters (a full particle/class system) and the richer historical Generative Grid (noise + rotation + multiple mappings at once) were deliberately **not** adapted; both stay historical-only, and Generative Grid is mentioned only as an optional "push further yourself" idea in the session page, not a new sketch.
+- Added an explicit **Session 4 -> 5** bridge (loops repeating an instruction -> a function packaging a visual rule, with a callback to Session 01's `drawFace()`) and **Session 5 -> 6** bridge ("Last session, you called your own functions... now we will see what happens when a function calls itself" / noise as a second, different route to complexity).
+- Wrote three independent instruction sheets (Shapes Function, Noise Grid, Recursive Tree), each with visible-feedback steps and a personal-variation step.
+- All three new sketches were added to `years/2026-2027/course-data.js` and are editable in the existing Lab; `assets/lab.js` was not modified.
+- No slide decks were added (none exist for 2026-2027 yet, by design).
+- Session 07 and the optional media session were **not** built. No historical folder was copied wholesale.
+- `currentSession` in `course-data.js` now points to `session-06` (the newest session), matching the existing convention.
 - `years/2024-2025/` and `years/2025-2026/` are unchanged (verified with `git diff`).
 
-## Previously Completed (Correction Pass, Post-Review of Sessions 1-2)
+## Previously Completed
 
-A teaching-quality review of the implemented Sessions 1-2 found them "ready
-with minor revisions." That pass fixed:
-
-- A MUST-FIX bug in Mouse Shapes (`const` variables the worksheet instructed students to reassign; now `let`).
-- A missing Color House instruction sheet with an explicit variable definition.
-- An explicit Session 1 -> 2 bridge.
-- Debugging-moment wording that no longer promises one exact error string.
-- A Mouse Shapes worksheet step reducing first-run overload.
-- The Lab's silent runtime-error gap (`assets/lab.js` now reports errors thrown inside `draw()`/`setup()`/etc. instead of freezing silently), plus removal of a dead `postMessage` handler.
-- Regression coverage for both the runtime-error fix and the historical Mouse Shapes reassignment bug.
-
-## Previously Completed (Initial Sessions 1-2 Build)
-
-- Implemented **Session 01 (Drawing, Coordinates and First Functions)**: one canonical Processing/p5.js "Face Exercise" - a single `drawFace(x, y, diameter)` function called three times at different sizes/positions, with proportional (not fixed-pixel) eye offsets.
-- Implemented **Session 02 (Variables, Mouse Input and Mapping)**: "Color House" (click-to-recolor opener) and "Mouse Shapes" (mouseX/mouseY driving position and color through `map()`).
-- Created the 2026-2027 Sketch Lab (`web/lab.html`), exposing course sketches via the shared `assets/lab.js` runtime.
-- No slide decks were added: no editable slide-source workflow exists in the repository, and the 2026-2027 session boundaries do not match the historical ones closely enough to reuse them honestly.
+- **Sessions 01-02** (Drawing/Coordinates/Functions; Variables/Mouse/Mapping): Face Exercise, Color House, Mouse Shapes, plus a correction pass that fixed a `const`/`let` reassignment bug in Mouse Shapes, added a missing Color House instruction sheet, added an explicit Session 1->2 bridge, and fixed the Lab's silent runtime-error reporting gap (`assets/lab.js` now reports errors thrown inside `draw()`/`setup()`/etc. instead of freezing silently).
+- **Sessions 03-04** (Conditionals/Movement/State; Loops/Grids/Waves): Hover Color, Bouncing Ball Color, Loop Row, Hover Grid, Simple Waves - each with explicit previous-session bridges and behavioral (non-error) debugging moments.
+- The 2026-2027 Sketch Lab (`web/lab.html`) exposes every course sketch above via the shared `assets/lab.js` runtime.
+- No slide decks exist yet: no editable slide-source workflow exists in the repository, and the 2026-2027 session boundaries do not match the historical ones closely enough to reuse them honestly.
 
 ## Files Changed (This Pass)
 
-- `years/2026-2027/course-data.js` (added `session-03`, `session-04`, 5 new sketches; `currentSession` now points to `session-04`)
-- `years/2026-2027/sessions/session-03/index.html`, `session-04/index.html` (new)
-- `years/2026-2027/source/session-03/hover-color/{hover-color.pde, instructions_hover-color.txt}` (new)
-- `years/2026-2027/source/session-03/bouncing-ball/{bouncing-ball.pde, instructions_bouncing-ball.txt}` (new)
-- `years/2026-2027/source/session-04/loop-row/{loop-row.pde, instructions_loop-row.txt}` (new)
-- `years/2026-2027/source/session-04/hover-grid/{hover-grid.pde, instructions_hover-grid.txt}` (new)
-- `years/2026-2027/source/session-04/simple-waves/{simple-waves.pde, instructions_simple-waves.txt}` (new)
-- `years/2026-2027/web/{hover-color,bouncing-ball,loop-row,hover-grid,simple-waves}/{index.html,sketch.js}` (new)
+- `years/2026-2027/course-data.js` (added `session-05`, `session-06`, 3 new sketches; `currentSession` now points to `session-06`)
+- `years/2026-2027/sessions/session-05/index.html`, `session-06/index.html` (new)
+- `years/2026-2027/source/session-05/shapes-function/{shapes-function.pde, instructions_shapes-function.txt}` (new)
+- `years/2026-2027/source/session-06/noise-grid/{noise-grid.pde, instructions_noise-grid.txt}` (new)
+- `years/2026-2027/source/session-06/recursive-tree/{recursive-tree.pde, instructions_recursive-tree.txt}` (new)
+- `years/2026-2027/web/{shapes-function,noise-grid,recursive-tree}/{index.html,sketch.js}` (new)
 - `years/2026-2027/README.md` (course map + web sketch list)
-- `index.html`, `README.md`, `COURSE_INDEX.md` (2026-2027 now shows 4 sessions)
-- `tools/smoke-test.mjs` (generic "every Lab sketch for the newest year loads cleanly" check; pinned Bouncing Ball state-reassignment regression)
+- `index.html`, `README.md`, `COURSE_INDEX.md` (2026-2027 now shows 6 sessions)
+- `tools/smoke-test.mjs` (pinned Recursive Tree call-count safety-net regression, timeout-guarded)
 - `PROJECT_STATUS.md`, `CHANGELOG.md`
 
 ## Checks Run (This Pass)
 
 - `npm run check` - passed (build:index, check:site, check:assets).
-- `npm run smoke:browser` - passed, including the two new checks (all-Lab-sketches-load, and the pinned Bouncing Ball `let` regression).
+- `npm run smoke:browser` - passed, including the new pinned Recursive Tree safety-net regression and the existing generic "every Lab sketch for the newest year loads cleanly" check (now covering all 11 sketches).
 - Fresh-install verification: `rm -rf node_modules && npm ci` followed by `npm run check` and `npm run smoke:browser` - both passed.
-- `node --check` on `tools/smoke-test.mjs` - passed. `git diff --check` - clean.
-- Manual Playwright verification of literal worksheet edits for all 5 new sketches (speed/color/loop-count/spacing/amplitude changes) - all ran cleanly with no page errors.
-- Manual verification of both debugging moments by screenshot: Bouncing Ball's wrong-variable swap makes the ball drift off the canvas edge instead of bouncing (no error); Hover Grid's row/col mix-up collapses the grid into a visible diagonal line (no error).
+- `node --check` on `tools/smoke-test.mjs` and `years/2026-2027/course-data.js` - passed. `git diff --check` - clean.
+- Manual Playwright verification of literal worksheet edits for all 3 new sketches (parameter ranges, noise scale, branch multiplier, stopping threshold, angle) - all ran cleanly with no page errors.
+- Manual verification of both debugging moments by screenshot: Recursive Tree's matched-rotation mistake curls the tree into one arm instead of forking (no error); Noise Grid's scale extremes visibly confirm smooth-vs-chaotic behavior.
+- Manual stress test: an aggressive branch multiplier (0.97) was run in the Lab and confirmed the page stays responsive, verifying the call-count safety net.
 - `git diff -- years/2024-2025` and `git diff -- years/2025-2026` - both empty.
 
 ## Remaining Tasks
 
-- Session 05: Functions, Parameters and Generative Systems
-- Session 06: Noise and Recursion
 - Session 07: Arrays, Objects and Particles
 - Optional Session 08: Image and Video as Material
 - Assessment/final-project prompts for 2026-2027, once enough sessions exist to write them against
-- Optional lightweight teaching diagrams (not slide decks): canvas coordinate diagram (Session 01), `map()` range diagram (Session 02), position/velocity + condition-flow diagram (Session 03), manual-repetition-vs-loop + row/column + sine amplitude/phase diagrams (Session 04)
+- Optional lightweight teaching diagrams (not slide decks): canvas coordinate diagram (01), `map()` range diagram (02), position/velocity + condition-flow diagram (03), loop/grid/wave diagrams (04), function-definition/call + parameter-flow diagram (05), random-vs-noise comparison + recursive call-level/base-case diagram (06)
 - Separately review/merge the Dependabot Playwright update (1.60.0 -> 1.62.1)
 - Author decision on licensing for the original teaching material
+- Possible future optional/stretch addition: Spiral Spins (kept historical for now, not part of any required session)
 
 ## Known Issues
 

@@ -1,0 +1,67 @@
+Programming for Visual Artists
+Session 06 - Noise Grid
+
+You have been given a grid where every circle's size comes from
+noise() instead of random(). Your task is to see what makes noise()
+different, then use it to control something of your own.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Click a few times to see
+new compositions.
+
+---
+
+STEP 2 - Compare Nearby Cells
+
+Look at two circles that sit right next to each other. Their sizes are
+close, not wildly different. Now compare two circles on opposite
+corners of the grid - much less similar. That closeness between
+neighbors is what noise() gives you and random() does not:
+
+  random(0, 1)   -> a new, unrelated value every single call
+  noise(x, y)    -> nearby (x, y) inputs give nearby output values
+
+---
+
+STEP 3 - Find the noise() Call
+
+Find the line that calculates n using noise(). col and row (multiplied
+by noiseScale) are the coordinates it reads from the noise field;
+map() then turns that 0-1 value into a pixel size, the same way it
+turned mouseX into a color back in Session 02.
+
+---
+
+STEP 4 - Change the Noise Scale
+
+Change noiseScale to 2 and click to regenerate. Nearby cells now look
+almost as unrelated as random() would - the noise field is being
+sampled at points too far apart to look smooth. Now change it to
+0.01: nearly every cell looks the same size, because now the sample
+points are too close together to show any change at all. Put it back
+to something between 0.1 and 0.3.
+
+---
+
+STEP 5 - Control a Different Property
+
+Instead of using n to set size, use it to set something else - for
+example fill(n * 255) for brightness, or the circle's y offset within
+its cell.
+
+---
+
+STEP 6 - Create Your Own Organic Grid
+
+Change the grid size, the color, the shape, or combine noise-based
+size with a second, independent noise() call for a different property.
+
+---
+
+Two nearby cells look related because they read two nearby points from
+the same smooth field - not because anything was copied between them.
+That is the whole idea behind noise(): related output from related
+input, everywhere else in the field left free to change gradually.

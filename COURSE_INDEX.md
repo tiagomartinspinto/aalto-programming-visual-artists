@@ -8,7 +8,7 @@ Generated from the repository structure and year data files. Run `npm run build:
 | --- | ---: | ---: | ---: |
 | [2024-2025](years/2024-2025/) | 8 | 9 | 8 |
 | [2025-2026](years/2025-2026/) | 6 | 10 | 6 |
-| [2026-2027](years/2026-2027/) | 4 | 8 | 0 |
+| [2026-2027](years/2026-2027/) | 6 | 11 | 0 |
 
 ## 2024-2025
 
@@ -96,6 +96,8 @@ Generated from the repository structure and year data files. Run `npm run build:
 - [Variables, Mouse Input and Mapping](years/2026-2027/sessions/session-02/)
 - [Conditionals, Movement and State](years/2026-2027/sessions/session-03/)
 - [Loops, Grids and Waves](years/2026-2027/sessions/session-04/)
+- [Functions, Parameters and Generative Systems](years/2026-2027/sessions/session-05/)
+- [Noise and Recursion](years/2026-2027/sessions/session-06/)
 
 ### Web Sketches
 
@@ -106,4 +108,7 @@ Generated from the repository structure and year data files. Run `npm run build:
 - [Hover Grid](years/2026-2027/web/hover-grid/)
 - [Loop Row](years/2026-2027/web/loop-row/)
 - [Mouse Shapes](years/2026-2027/web/mouse-shapes/)
+- [Noise Grid](years/2026-2027/web/noise-grid/)
+- [Recursive Tree](years/2026-2027/web/recursive-tree/)
+- [Shapes Function](years/2026-2027/web/shapes-function/)
 - [Simple Waves](years/2026-2027/web/simple-waves/)

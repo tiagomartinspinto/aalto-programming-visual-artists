@@ -1,0 +1,111 @@
+Programming for Visual Artists
+Session 06 - Recursive Tree
+
+You have been given a tree made of one function that calls itself.
+Your task is to find that function, find the rule that eventually
+stops it, and see how one small change reshapes the whole structure.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Watch the whole branching
+structure, and notice it sways slightly over time. Click to grow a
+tree with a different starting length.
+
+---
+
+STEP 2 - Find branch()
+
+Find the branch(length, angle) function. It draws one line, moves to
+the end of that line, and then - inside an if statement - calls
+branch() again, twice.
+
+---
+
+STEP 3 - Find Where It Calls Itself
+
+A function that calls itself is recursive. Find the two lines inside
+branch() that call branch() again, each time with a smaller length
+(length * 0.67) and a mirrored angle (angle and -angle). Every branch
+is really just two smaller copies of the same rule.
+
+---
+
+STEP 4 - Find the Stopping Condition
+
+Find if (length > 8). This is the base case: the condition that
+eventually becomes false and stops branch() from calling itself
+again. Without it, branch() would try to keep calling itself on
+shorter and shorter branches forever. Trace it in your head:
+
+  big branch -> two smaller branches -> four smaller branches -> ...
+  -> branches shorter than 8 -> stop
+
+---
+
+STEP 5 - Change the Branch-Length Multiplier
+
+Change 0.67 (in both recursive calls) to a value between 0.5 and 0.85
+and run it. A number closer to 1 keeps branches longer for more
+levels, so the tree gets denser; a smaller number makes it thin out
+faster.
+
+---
+
+STEP 6 - Change the Angle
+
+Change the 25 or the 10 inside radians(25 + sin(frameCount * 0.02) *
+10) to change how wide the tree opens or how much it sways.
+
+---
+
+STEP 7 - Change the Stopping Threshold
+
+Change 8 in the base case to a larger number (the tree stops sooner,
+fewer levels) or a smaller one (more levels, finer branches).
+
+---
+
+STEP 8 - Debugging Moment: Branches That Do Not Split
+
+Change the second recursive call's rotate(-angle) to rotate(angle),
+so both calls rotate the same way:
+
+  push();
+  rotate(angle);
+  branch(length * 0.67, angle);
+  pop();
+
+  push();
+  rotate(angle);   // was rotate(-angle);
+  branch(length * 0.67, angle);
+  pop();
+
+Run it. The sketch will not crash and no error will appear - but the
+tree will curl into a single spiral-like arm instead of forking into
+two. Ask yourself:
+
+  What did I expect two recursive calls to produce?
+  What actually happened?
+  What is different between the two calls that should have made them
+  mirror each other?
+
+Change the second call back to rotate(-angle) and confirm the tree
+forks again.
+
+---
+
+STEP 9 - Grow Your Own Form
+
+Combine changes to the multiplier, the angle, the stopping threshold,
+and the color until the result feels like your own branching form
+rather than the original tree.
+
+---
+
+Nothing in branch() "knows" it is building a tree - it only knows how
+to draw one branch and, if that branch is still long enough, ask
+itself to draw two smaller ones. The tree shape is what that one small
+rule looks like once it has been allowed to repeat itself as many
+times as the stopping condition permits.
