@@ -262,15 +262,23 @@ function checkHtml(filePath) {
     }
   }
 
-  if (/^years\/\d{4}-\d{4}\/sessions\/session-\d+\/index\.html$/.test(rel)) {
+  const sessionPageMatch = rel.match(/^years\/(\d{4}-\d{4})\/sessions\/(session-\d+)\/index\.html$/);
+  if (sessionPageMatch) {
     if (/<iframe\b[^>]*\.pdf/i.test(html)) {
       errors.push(`${rel} embeds a PDF iframe instead of the browser-compatible PDF panel`);
     }
-    if (!html.includes('class="slides-panel"')) {
-      errors.push(`${rel} is missing the session PDF panel`);
-    }
-    if (!/<a\b(?=[^>]*\bhref=["'][^"']+\.pdf["'])(?=[^>]*\btarget=["']_blank["'])(?=[^>]*\brel=["'][^"']*\bnoopener\b[^"']*\bnoreferrer\b[^"']*["'])[^>]*>/i.test(html)) {
-      errors.push(`${rel} is missing a safe direct PDF link for session slides`);
+    // Only require the PDF panel/link once that session actually has a slide
+    // deck file. A session can honestly launch without slides yet; it must
+    // not be forced to link to a PDF that does not exist.
+    const [, year, session] = sessionPageMatch;
+    const hasSlideDeck = existsSync(path.join(root, "years", year, "slides", `${session}.pdf`));
+    if (hasSlideDeck) {
+      if (!html.includes('class="slides-panel"')) {
+        errors.push(`${rel} is missing the session PDF panel`);
+      }
+      if (!/<a\b(?=[^>]*\bhref=["'][^"']+\.pdf["'])(?=[^>]*\btarget=["']_blank["'])(?=[^>]*\brel=["'][^"']*\bnoopener\b[^"']*\bnoreferrer\b[^"']*["'])[^>]*>/i.test(html)) {
+        errors.push(`${rel} is missing a safe direct PDF link for session slides`);
+      }
     }
   }
 }

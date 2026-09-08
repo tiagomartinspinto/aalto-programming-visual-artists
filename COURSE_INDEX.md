@@ -8,7 +8,7 @@ Generated from the repository structure and year data files. Run `npm run build:
 | --- | ---: | ---: | ---: |
 | [2024-2025](years/2024-2025/) | 8 | 9 | 8 |
 | [2025-2026](years/2025-2026/) | 6 | 10 | 6 |
-| [2026-2027](years/2026-2027/) | 0 | 0 | 0 |
+| [2026-2027](years/2026-2027/) | 2 | 3 | 0 |
 
 ## 2024-2025
 
@@ -88,3 +88,15 @@ Generated from the repository structure and year data files. Run `npm run build:
 ## 2026-2027
 
 - [Year landing page](years/2026-2027/)
+- [Sketch Lab](years/2026-2027/web/lab.html)
+
+### Session Pages
+
+- [Drawing, Coordinates and First Functions](years/2026-2027/sessions/session-01/)
+- [Variables, Mouse Input and Mapping](years/2026-2027/sessions/session-02/)
+
+### Web Sketches
+
+- [Color House](years/2026-2027/web/color-house/)
+- [Face Exercise](years/2026-2027/web/face-exercise/)
+- [Mouse Shapes](years/2026-2027/web/mouse-shapes/)

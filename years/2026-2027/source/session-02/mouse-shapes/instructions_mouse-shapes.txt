@@ -1,0 +1,89 @@
+Programming for Visual Artists
+Session 02 - Mouse Shapes
+
+You have been given a working sketch where a circle and a square react
+to the mouse. Your task is to find where that reaction actually
+happens, then change it. If something stops working, read the error
+message, find the line it points to, and try again.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). Move the mouse around and
+watch the background, the circle, and the square all change.
+
+---
+
+STEP 2 - Find the Variables
+
+Find circleX, circleY, squareX, and squareY in draw(). These are
+variables: named values that get a new number every single frame,
+instead of staying fixed like circleSize does.
+
+---
+
+STEP 3 - Replace a Fixed Value with mouseX
+
+Change one of the lines that use circleSize (a fixed number) so it
+also depends on mouseX, for example by making the circle grow as the
+mouse moves right:
+
+  circleSize = map(mouseX, 0, width, 10, 120);
+
+---
+
+STEP 4 - Replace Another Value with mouseY
+
+Do the same for something driven by height, using mouseY instead.
+
+---
+
+STEP 5 - Use map() to Convert a Range
+
+map() takes a value in one range and converts it to a value in
+another range. Find every map() call in the sketch and, for one of
+them, change the output range (the last two numbers) to see how the
+result changes:
+
+  map(mouseX, 0, width, 0, 255)   becomes   map(mouseX, 0, width, 100, 200)
+
+---
+
+STEP 6 - Change the Visual Result
+
+Combine two of your changes so far into one new visual behavior -
+for example, make the square's color depend on the circle's position
+instead of its own.
+
+---
+
+STEP 7 - Add One Click-Driven Change
+
+Add a mousePressed() function (see Color House for the pattern) that
+changes one variable - for example circleSize - to a new random value
+every time you click.
+
+---
+
+STEP 8 - Create Your Own Responsive Composition
+
+Add a third shape that reacts to the mouse in its own way. Reuse
+map() rather than inventing a new technique.
+
+---
+
+DEBUGGING MOMENT
+
+If your sketch stops drawing after adding a new map() call, check
+that you passed exactly five values in the right order: the input
+value, the input range (two numbers), and the output range (two
+numbers). A missing number is one of the most common map() mistakes,
+and Processing/the browser console will usually name the function
+that received too few arguments.
+
+---
+
+The shapes never "know" where the mouse is by magic - mouseX and
+mouseY are variables the environment keeps updating for you, and
+map() is how you turn those numbers into anything else you want.

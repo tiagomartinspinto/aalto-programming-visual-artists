@@ -325,10 +325,11 @@ async function checkResponsiveSlideControls(page, yearInfo, viewport) {
   await expectNoHorizontalOverflow(page, `${year} JS ${viewport.width}px`);
 }
 
-async function expectSessionPdfPanel(page, urlPath, label) {
+async function expectSessionPdfPanel(page, urlPath, label, hasSlideDeck) {
   await page.goto(site(urlPath), { waitUntil: "domcontentloaded" });
-  await expectCount(page, ".slides-panel", 1, `${label} PDF panel`);
   if ((await page.locator("iframe[src$='.pdf']").count()) !== 0) throw new Error(`${label} still embeds a PDF iframe`);
+  if (!hasSlideDeck) return; // this session honestly has no slide deck yet; nothing further to check
+  await expectCount(page, ".slides-panel", 1, `${label} PDF panel`);
   const link = page.locator(".slides-panel a");
   if ((await link.getAttribute("target")) !== "_blank") throw new Error(`${label} PDF link does not open in a new tab`);
   const relAttr = await link.getAttribute("rel");
@@ -340,7 +341,8 @@ async function checkSessionPdfPanel(page, yearInfo) {
   const sessions = yearInfo.data.sessions;
   const target = sessions.find((session) => session.id === yearInfo.data.currentSession?.id) || sessions[sessions.length - 1];
   if (!target?.href) return;
-  await expectSessionPdfPanel(page, `${yearInfo.urlPath}${target.href}`, `${yearInfo.year} session slides`);
+  const hasSlideDeck = existsSync(path.join(yearInfo.yearPath, "slides", `${target.id}.pdf`));
+  await expectSessionPdfPanel(page, `${yearInfo.urlPath}${target.href}`, `${yearInfo.year} session slides`, hasSlideDeck);
 }
 
 async function expectHomeMetadata(page) {

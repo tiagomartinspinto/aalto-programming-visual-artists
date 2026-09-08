@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+    <title>Sketch Lab - 2026-2027 - Programming for Visual Artists</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none';">
+    <link rel="stylesheet" href="lab.css">
+    <link rel="stylesheet" href="../../../assets/ascii-skin.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#code">Skip to code editor</a>
+    <header>
+      <strong>Sketch Lab</strong>
+      <nav aria-label="Lab directory">
+        <a href="../../../index.html">all-years</a>
+        <a href="../index.html">2026-2027</a>
+        <span aria-current="page">lab</span>
+      </nav>
+    </header>
+    <div class="file-warning" id="file-warning" role="status" hidden>
+      <strong>For class, open the Lab from GitHub Pages or a local server.</strong>
+      <span>You opened it as a local file, and your browser may block the course sketch code from loading with <code>fetch()</code>.</span>
+    </div>
+    <div class="privacy-note" role="note"><strong>Privacy:</strong> Code edits run locally in your browser and are not uploaded.</div>
+    <main id="main-content">
+      <section class="stage" aria-label="Live sketch preview">
+        <div class="toolbar">
+          <label for="sketch-select">Choose course sketch</label>
+          <select id="sketch-select"></select>
+          <button class="primary" id="run-button" type="button" aria-controls="preview">Run your changes</button>
+          <button id="reset-button" type="button" aria-controls="code preview">Reset to course version</button>
+        </div>
+        <div id="preview" class="preview-frame" role="region" aria-label="Editable sketch preview" aria-describedby="status"></div>
+      </section>
+      <section class="editor" aria-label="Sketch source editor">
+        <div>
+          <h1 id="sketch-title">Choose a course sketch</h1>
+          <p class="meta" id="sketch-meta"></p>
+        </div>
+        <div class="editor-toolbar">
+          <a id="open-page" href="#">Open sketch only</a>
+          <a id="open-source" href="#">Compare Processing code</a>
+        </div>
+        <label class="visually-hidden" for="code">Edit p5.js code</label>
+        <textarea id="code" spellcheck="false" aria-describedby="status"></textarea>
+        <div class="status" id="status" aria-live="polite"></div>
+      </section>
+    </main>
+    <script src="vendor/p5.min.js"></script>
+    <script src="../course-data.js"></script>
+    <script src="../../../assets/lab.js"></script>
+  </body>
+</html>

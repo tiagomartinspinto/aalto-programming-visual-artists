@@ -1,0 +1,97 @@
+Programming for Visual Artists
+Session 01 - Face Exercise
+
+You have been given a working sketch that draws three faces.
+Your task is to read it, change it, and understand why it is built this way.
+Do not worry about breaking things. If something stops working, read the
+error message, find the line it points to, and try again.
+
+---
+
+STEP 1 - Run It
+
+Run the sketch (or open it in the browser). You should see three faces
+at different sizes and positions.
+
+---
+
+STEP 2 - Change One Shape
+
+Inside drawFace(), change the eyes from ellipses to rectangles, or make
+the mouth a different shape. Run it again after every change.
+
+---
+
+STEP 3 - Change One Color
+
+Change the face color, the eye color, or the background color.
+Notice that all three faces update together, because they all come
+from the same fill() call inside the same function.
+
+---
+
+STEP 4 - Move One Part
+
+Change eyeOffsetX or eyeOffsetY. Watch how the change applies to every
+face at once, at every size, because the offsets are written as a
+fraction of diameter (diameter * 0.15) instead of a fixed number.
+
+---
+
+STEP 5 - Notice the Function
+
+Before this sketch existed, a face like this could be drawn with one
+long list of shape commands, repeated for every face you wanted:
+
+  fill(255, 220, 200);
+  ellipse(160, 150, 160, 160);
+  fill(0);
+  ellipse(160 - 24, 150 - 16, 16, 16);
+  ellipse(160 + 24, 150 - 16, 16, 16);
+  ... and then the whole thing again for the second face, with
+  different numbers, and again for the third.
+
+Putting the drawing inside drawFace(x, y, diameter) means you write
+the shape commands once. Find drawFace() in the code and read it as
+"the recipe for one face," separate from the three lines in draw()
+that use the recipe.
+
+---
+
+STEP 6 - Add Parameters
+
+drawFace() already takes three parameters: x, y, and diameter.
+Try adding a fourth parameter for eye color, and pass a different
+color to each of the three calls in draw().
+
+---
+
+STEP 7 - Call It More Than Once
+
+Add a fourth call to drawFace() with new numbers to add another face.
+Then try calling it a fifth time with a very small diameter.
+
+---
+
+STEP 8 - Make Your Own Variation
+
+Change the proportions, the palette, or add one new feature
+(eyebrows, a hat, a different mouth shape). Keep using drawFace() so
+your version still benefits from one shared recipe.
+
+---
+
+DEBUGGING MOMENT
+
+If you add a parameter to drawFace() and only update the function
+definition (not every call in draw()), Processing/the browser console
+will report an error such as "not enough arguments" or the sketch will
+simply stop drawing. Read the error message, find the call that is
+missing the new value, and add it. This is normal - it happens to
+everyone who edits functions with parameters.
+
+---
+
+Small changes in numbers produce large visual differences.
+You are designing a reusable rule, not just drawing three pictures.
+Experiment. Explore. Be curious.
