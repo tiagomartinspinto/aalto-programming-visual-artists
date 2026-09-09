@@ -251,6 +251,22 @@ h3::before { content: "> " !important; }
   color: #000000 !important;
 }
 
+/*
+ * Lab status/disclosure boxes (.privacy-note, .file-warning, .load-message)
+ * are styled per year for a dark backdrop (pale accent text such as
+ * #d7fbf6 or #ffd3cf). Most of their text already renders in black because
+ * it sits inside <strong>/<span>/<code>, which the tag rule above already
+ * forces to #000000. Force it here too, on the container itself, so the
+ * text stays readable even when it is not wrapped in one of those tags -
+ * this is what was leaving ".privacy-note" text unreadable against this
+ * skin's white page background.
+ */
+.privacy-note,
+.file-warning,
+.load-message {
+  color: #000000 !important;
+}
+
 .links a,
 .reader-button,
 .search-filter,

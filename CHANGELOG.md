@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-09-09 (lab status contrast)
+
+- Fixed a real accessibility defect found during a rendered-interface design review: the Lab's privacy notice ("Code edits run locally in your browser and are not uploaded.") rendered at roughly 1:1 contrast, effectively invisible, on all three academic years' Lab pages. The per-year `lab.css` colors for `.privacy-note`/`.file-warning`/`.load-message` were authored for a dark backdrop and never reconciled with the shared light ASCII skin. Fixed once in `assets/ascii-skin.css` so all three years inherit accessible text automatically; no year-specific `lab.css` file was touched, and `years/2024-2025/` and `years/2025-2026/` remain byte-for-byte unchanged.
+
 ## 2026-09-08 (teaching diagrams)
 
 - Added seven lightweight, local SVG teaching cards to Sessions 01, 02, 04, 05, 06 (two), and 07, placed on the session pages next to the concepts they support: canvas coordinates, map() ranges, nested-loop rows/columns, function parameter flow, random() vs noise(), the recursion base case, and the particle/array lifecycle. No slide decks, no Session 08, no curriculum changes. Session 03 intentionally has no new visual.
