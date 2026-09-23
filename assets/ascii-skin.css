@@ -58,22 +58,31 @@ button {
   font-family: "Courier New", Consolas, "Liberation Mono", monospace !important;
 }
 
+/*
+ * Every page's own header gets the same bar, whether or not it carries the
+ * .topbar class. Session, project, and Lab pages use a bare <header> whose
+ * per-year styles paint a dark translucent backdrop; without this they
+ * rendered black text on near-black (about 1.3:1).
+ */
 .topbar,
-header.topbar {
+body > header {
   margin: 8px !important;
   padding: 6px 8px !important;
   border: 2px solid #000000 !important;
   border-bottom-width: 4px !important;
   background: #ffffff !important;
+  color: #000000 !important;
   backdrop-filter: none !important;
 }
 
-.brand {
+.brand,
+body > header > strong {
   font-weight: 900 !important;
   text-transform: uppercase !important;
 }
 
-.brand::before {
+.brand::before,
+body > header > strong::before {
   content: "C:\\PVA> " !important;
 }
 
@@ -92,6 +101,7 @@ nav::before,
 }
 
 nav a,
+nav span,
 .directory-nav a,
 .directory-nav span {
   min-height: 26px !important;
@@ -99,9 +109,11 @@ nav a,
   border: 1px solid transparent !important;
   background: #ffffff !important;
   color: #000000 !important;
+  font-weight: 400 !important;
 }
 
 nav a::before,
+nav span::before,
 .directory-nav a::before,
 .directory-nav span::before {
   color: #000000 !important;
@@ -109,8 +121,7 @@ nav a::before,
 }
 
 nav a:hover,
-nav a[aria-current="page"],
-nav a[aria-current="true"],
+nav [aria-current],
 .directory-nav a:hover,
 .directory-nav span[aria-current="page"],
 .route-list a:hover,
@@ -151,6 +162,11 @@ main {
 .viewer,
 .mini-preview,
 .toolbar,
+.privacy-note,
+.file-warning,
+.load-message,
+article,
+.teaching-card,
 aside,
 canvas,
 iframe,
@@ -259,7 +275,8 @@ h3::before { content: "> " !important; }
  * forces to #000000. Force it here too, on the container itself, so the
  * text stays readable even when it is not wrapped in one of those tags -
  * this is what was leaving ".privacy-note" text unreadable against this
- * skin's white page background.
+ * skin's white page background. Their tinted frames are replaced by the
+ * standard frame in the shared frame list above.
  */
 .privacy-note,
 .file-warning,
@@ -269,6 +286,8 @@ h3::before { content: "> " !important; }
 
 .links a,
 .reader-button,
+.slide-open-link,
+.slides-panel a,
 .search-filter,
 .sketch-links a,
 button {
@@ -284,6 +303,8 @@ button {
 
 .links a::before,
 .reader-button::before,
+.slide-open-link::before,
+.slides-panel a::before,
 .search-filter::before,
 .sketch-links a::before,
 button::before {
@@ -292,6 +313,8 @@ button::before {
 
 .links a::after,
 .reader-button::after,
+.slide-open-link::after,
+.slides-panel a::after,
 .search-filter::after,
 .sketch-links a::after,
 button::after {
@@ -300,8 +323,9 @@ button::after {
 
 .links a:hover,
 .reader-button:hover,
+.slide-open-link:hover,
+.slides-panel a:hover,
 .search-filter:hover,
-.search-filter[aria-pressed="true"],
 .sketch-links a:hover,
 button:hover,
 button.primary:hover {
@@ -311,11 +335,22 @@ button.primary:hover {
   transform: none !important;
 }
 
+/*
+ * A pressed filter is the one selection in its group, so it inverts (like
+ * text selection) rather than sharing the gray hover fill. It must never
+ * read weaker than the unpressed filters beside it.
+ */
+.search-filter[aria-pressed="true"],
+.search-filter[aria-pressed="true"]:hover {
+  border-color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
 .meta b,
 .tags span,
 .tag,
-.stat,
-.search-filter[aria-pressed="true"] {
+.stat {
   border: 1px solid #000000 !important;
   background: #ffffff !important;
   color: #000000 !important;
@@ -457,4 +492,60 @@ select {
 .mini-preview span,
 .preview-token span {
   background: #000000 !important;
+}
+
+/*
+ * Inline code is already monospace like everything else, so it needs no
+ * chip. The per-year chip (pale border, faint fill) was drawn for a dark
+ * backdrop and left a near-invisible outline on this white page.
+ */
+code {
+  border-color: transparent !important;
+  background: transparent !important;
+}
+
+.runtime-note {
+  border-color: #000000 !important;
+}
+
+/*
+ * A Lab error must be recognizable without color: it keeps the factual
+ * "Error: ..." wording from lab.js and gains a frame and heavy weight, while
+ * ordinary status stays a plain line of text.
+ */
+.status.error {
+  padding: 6px 8px !important;
+  border: 2px solid #000000 !important;
+  font-weight: 900 !important;
+}
+
+/* Sketch pages put their title in a narrow side column. */
+aside h1 {
+  font-size: 28px !important;
+}
+
+/* Keep sustained reading prose (project briefs) to a readable measure. */
+article p,
+article li {
+  max-width: 80ch;
+}
+
+/*
+ * On phones the sticky bar is persistent screen cost. Drop the ornamental
+ * prompt and [DIR] prefixes and tighten the brand/nav gap; every path
+ * segment and the current-location marker stay.
+ */
+@media (max-width: 480px) {
+  .topbar,
+  body > header {
+    gap: 4px !important;
+  }
+
+  .brand::before,
+  body > header > strong::before,
+  nav::before,
+  .directory-nav::before {
+    content: none !important;
+    margin: 0 !important;
+  }
 }

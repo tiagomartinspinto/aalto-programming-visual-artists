@@ -29,6 +29,6 @@
   <text x="286" y="175" font-size="16" font-weight="bold">(250, 150)</text>
 
   <!-- width / height labels -->
-  <text x="200" y="358" font-size="14">width</text>
-  <text x="404" y="205" font-size="14" transform="rotate(90 404 205)">height</text>
+  <text x="200" y="358" font-size="15">width</text>
+  <text x="404" y="205" font-size="15" transform="rotate(90 404 205)">height</text>
 </svg>

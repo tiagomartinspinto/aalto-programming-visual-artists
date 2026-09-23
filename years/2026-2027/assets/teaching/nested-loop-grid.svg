@@ -6,15 +6,15 @@
   </style>
 
   <!-- column labels -->
-  <text x="118" y="45" font-size="14">col 0</text>
-  <text x="188" y="45" font-size="14">col 1</text>
-  <text x="258" y="45" font-size="14">col 2</text>
-  <text x="328" y="45" font-size="14">col 3</text>
+  <text x="118" y="45" font-size="15">col 0</text>
+  <text x="188" y="45" font-size="15">col 1</text>
+  <text x="258" y="45" font-size="15">col 2</text>
+  <text x="328" y="45" font-size="15">col 3</text>
 
   <!-- row labels -->
-  <text x="30" y="95" font-size="14">row 0</text>
-  <text x="30" y="155" font-size="14">row 1</text>
-  <text x="30" y="215" font-size="14">row 2</text>
+  <text x="30" y="95" font-size="15">row 0</text>
+  <text x="30" y="155" font-size="15">row 1</text>
+  <text x="30" y="215" font-size="15">row 2</text>
 
   <!-- base grid: 4 cols x 3 rows, cell 70x60, origin (100,60) -->
   <g fill="#ffffff" stroke="#000000" stroke-width="2">
@@ -40,11 +40,11 @@
 
   <!-- intersection cell: row 1, col 2 -->
   <rect x="240" y="120" width="70" height="60" fill="#000000"/>
-  <text x="252" y="156" font-size="14" font-weight="bold" style="fill: #ffffff;">here</text>
+  <text x="252" y="156" font-size="15" font-weight="bold" style="fill: #ffffff;">here</text>
 
   <!-- legend -->
   <line x1="100" y1="255" x2="140" y2="255" stroke="#000000" stroke-width="4.5"/>
-  <text x="148" y="260" font-size="14">row 1 (solid) &#8594; becomes y</text>
+  <text x="148" y="260" font-size="15">row 1 (solid) &#8594; becomes y</text>
   <line x1="100" y1="280" x2="140" y2="280" stroke="#000000" stroke-width="4.5" stroke-dasharray="9,6"/>
-  <text x="148" y="285" font-size="14">col 2 (dashed) &#8594; becomes x</text>
+  <text x="148" y="285" font-size="15">col 2 (dashed) &#8594; becomes x</text>
 </svg>

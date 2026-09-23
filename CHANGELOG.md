@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-09-23 (shared design shell repair)
+
+- Fixed the page header on every session, project, and Lab page in all three academic years: those pages use a bare `<header>` that the shared ASCII skin did not cover, so it kept its per-year dark translucent backdrop and rendered the black site title and `[DIR]` navigation at about 1.3:1 contrast. `assets/ascii-skin.css` now styles any page's own header (`body > header`) as the same white bordered bar as the home and year pages (21:1), and the Lab's current-location item gets the standard marker instead of a tinted one.
+- Removed the remaining per-year accent tints from site chrome (Lab privacy notice, Lab current location, slide "Open PDF" links, historical session slide links, inline code chips, the sketch-page runtime rule). Colors inside sketches are untouched.
+- Fixed web sketch cards clipping their right edge and text at narrow widths (and some at desktop): the preview's `aspect-ratio` plus `min-height` forced a 368px minimum width inside a narrower card. Fixed once in `assets/year-common.css`.
+- Fixed the standalone sketch pages' title overflowing its side column at desktop (the skin's large H1 size applied inside the 260px aside).
+- A pressed search filter now inverts (black ground, white text) instead of rendering with a thinner border than the unpressed filters; a Lab error status now gets a frame and heavy weight so it is recognizable without color, keeping its factual "Error: ..." text.
+- Session/project content blocks, rhythm cards, and teaching diagrams now use the same 2px frame as the landing pages' content blocks; entry cards keep their heavy left rule and tags keep their thin border. Long project-brief prose is capped at about 80 characters per line (previously about 119).
+- On phones the sticky header drops the ornamental `C:\PVA>` and `[DIR]` prefixes and tightens its spacing (at 390px: year page 175px to 131px, session pages 132px to 105px); every path segment and the current-location marker remain.
+- Raised the smallest labels in the seven 2026-2027 teaching diagrams to a 15-unit minimum (a few labels repositioned in the recursion and particle diagrams to keep them clear of lines and edges) and reduced teaching-card padding on phones, so the smallest rendered label at 390px went from 8px to about 10.4px.
+- No curriculum, Lab behavior, or dependency changes; `years/2024-2025/` and `years/2025-2026/` are byte-for-byte unchanged and inherit the fixes through the shared skin.
+
 ## 2026-09-09 (lab status contrast)
 
 - Fixed a real accessibility defect found during a rendered-interface design review: the Lab's privacy notice ("Code edits run locally in your browser and are not uploaded.") rendered at roughly 1:1 contrast, effectively invisible, on all three academic years' Lab pages. The per-year `lab.css` colors for `.privacy-note`/`.file-warning`/`.load-message` were authored for a dark backdrop and never reconciled with the shared light ASCII skin. Fixed once in `assets/ascii-skin.css` so all three years inherit accessible text automatically; no year-specific `lab.css` file was touched, and `years/2024-2025/` and `years/2025-2026/` remain byte-for-byte unchanged.

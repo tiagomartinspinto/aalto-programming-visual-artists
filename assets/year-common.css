@@ -455,11 +455,18 @@ h1 {
 
 .web-card {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   overflow: hidden;
 }
 
+/*
+ * An explicit width stops aspect-ratio + min-height from deriving a 368px
+ * minimum width, which pushed the card's content past its clipped edge on
+ * narrow cards.
+ */
 .preview {
   position: relative;
+  width: 100%;
   aspect-ratio: 16 / 10;
   min-height: 230px;
   border-bottom: 1px solid var(--line);

@@ -247,3 +247,10 @@ article p {
   color: var(--muted);
   font-size: 14px;
 }
+
+/* On phones every pixel of width goes to the diagram's label size. */
+@media (max-width: 560px) {
+  .teaching-card {
+    padding: 8px;
+  }
+}
