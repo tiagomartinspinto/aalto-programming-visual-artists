@@ -2,7 +2,7 @@
 
 This repository is a static course archive. Keep each academic year self-contained, and prefer small, readable updates over broad redesigns during a live course.
 
-Before a change to curriculum design, site structure, or teaching material, read [PROJECT_DIRECTION.md](PROJECT_DIRECTION.md) for the project's stable identity and decision principles. This file covers day-to-day maintenance mechanics only.
+Before a change to curriculum design, site structure, or teaching material, read [PROJECT_DIRECTION.md](PROJECT_DIRECTION.md) for the project's stable identity and decision principles. Before changing shared interface styling, read [DESIGN.md](DESIGN.md) for the established visual and interaction language. This file covers day-to-day maintenance mechanics only.
 
 ## Regular Update Flow
 
@@ -18,7 +18,7 @@ Before a change to curriculum design, site structure, or teaching material, read
 1. Run `npm run new:year -- YYYY-YYYY`.
 2. Add sessions, sketches, slides, and search metadata to `years/YYYY-YYYY/course-data.js`.
 3. Add Lab files only after the year has browser sketches to edit; do not leave links to missing Lab pages.
-4. Adjust `years/YYYY-YYYY/year.css` only for the new year's palette and local path label.
+4. Leave `years/YYYY-YYYY/year.css` as generated unless the year needs its own style variables. The rendered look of every year comes from the shared shell, `assets/ascii-skin.css`, so interface changes belong there and follow [DESIGN.md](DESIGN.md); a new year does not need its own palette.
 5. Keep original Processing/source material in `source/session-XX/`.
 6. Keep slide decks in `slides/` using names like `session-01.pdf`.
 7. Add `sessions/session-XX/` pages for weekly entry points.
@@ -45,7 +45,7 @@ Use readable lowercase paths with hyphens or underscores, and avoid typo-prone a
 Keep the main year page split into:
 
 - `index.html` for page structure
-- `year.css` for year-specific visual skin
+- `year.css` for per-year style variables (the shared `assets/ascii-skin.css` shell sets the rendered look)
 - `course-data.js` for sessions, sketches, slides, tags, difficulty, duration, and related-material metadata
 - `../../assets/year.js` for reusable rendering and interactions
 

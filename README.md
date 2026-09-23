@@ -20,6 +20,7 @@ Live site: [tiagomartinspinto.github.io/aalto-programming-visual-artists](https:
 - [2024-2025](years/2024-2025/)
 - [Generated course index](COURSE_INDEX.md)
 - [Project direction](PROJECT_DIRECTION.md)
+- [Design language](DESIGN.md)
 - [Architecture overview](ARCHITECTURE.md)
 - [Security and public-content guidance](SECURITY.md)
 - [Preview manifest](PREVIEW_MANIFEST.md)
